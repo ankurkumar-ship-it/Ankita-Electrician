@@ -1,0 +1,15 @@
+{
+  "background_color": "#0b0f14",
+  "dir": "ltr",
+  "display": "fullscreen",
+  "name": "Ankita-Electrician",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Ankita-Electrician",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "lang": "en",
+  "categories": [
+    "business"
+  ]
+}
