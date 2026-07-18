@@ -121,8 +121,8 @@
                 <input type="text" id="custAddress" placeholder="Address" required>
                 
                 <div style="display: flex; gap: 15px;">
-                    <input type="date" id="custDate" required style="flex: 1; color: #9CA3AF;" onfocus="this.style.color='#FFFFFF'" onblur="if(this.value=='') this.style.color='#9CA3AF'">
-                    <input type="time" id="custTime" required style="flex: 1; color: #9CA3AF;" onfocus="this.style.color='#FFFFFF'" onblur="if(this.value=='') this.style.color='#9CA3AF'">
+                    <input type="text" id="custDate" placeholder="Select Date" required style="flex: 1;" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'">
+                    <input type="text" id="custTime" placeholder="Select Time" required style="flex: 1;" onfocus="(this.type='time')" onblur="if(!this.value) this.type='text'">
                 </div>
 
                 <select id="custService" required>
