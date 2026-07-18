@@ -520,3 +520,44 @@ body {
     transform: translateY(-4px); /* Button thoda upar uthega */
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
 }
+
+/* =========================================
+   Premium Language Selector (Footer)
+========================================== */
+.footer-lang-section {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.premium-lang-select {
+    appearance: none; /* Browser ka default safed design hatane ke liye */
+    -webkit-appearance: none;
+    background-color: var(--card-bg); /* Dark background */
+    color: var(--primary-yellow); /* Yellow text */
+    border: 1px solid var(--primary-yellow);
+    padding: 12px 45px 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    /* Custom Yellow Arrow banayenge */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23F59E0B' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E"); 
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.premium-lang-select:hover, .premium-lang-select:focus {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); /* Yellow chamak (glow) */
+}
+
+/* Dropdown list ka color */
+.premium-lang-select option {
+    background-color: var(--bg-main);
+    color: var(--text-white);
+    font-size: 16px;
+}
