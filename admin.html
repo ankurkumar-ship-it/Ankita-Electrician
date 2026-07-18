@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard - Ankita Electrician</title>
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    
+    <!-- Sidebar / Menu -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="active">
+                <a href="#">
+                    <img src="image/Dashboard.png" alt="Dashboard Icon">
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="image/booking-list.png" alt="Bookings Icon">
+                    <span>Bookings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="image/user.png" alt="Customers Icon">
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="image/star-feedback.png" alt="Feedback Icon">
+                    <span>Feedback</span>
+                </a>
+            </li>
+        </ul>
+        <div class="logout-box">
+             <a href="index.html" class="logout-btn">
+                <img src="image/logout.png" alt="Logout Icon">
+                <span>Logout</span>
+             </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Navigation -->
+        <header class="top-nav">
+             <div class="welcome-text">
+                  <h1>Welcome Back, Ankur! 👋</h1>
+                  <p>Here is the status of your business today.</p>
+             </div>
+        </header>
+
+        <!-- Dashboard Cards (Report Cards) -->
+        <section class="cards-section">
+            <div class="card card-blue">
+                <div class="card-info">
+                    <h3>Total Bookings</h3>
+                    <h2 id="total-count">...</h2>
+                </div>
+                <div class="card-icon">
+                     <img src="image/booking-list.png" alt="icon">
+                </div>
+            </div>
+
+            <div class="card card-yellow">
+                <div class="card-info">
+                    <h3>Pending Work</h3>
+                    <h2 id="pending-count">...</h2>
+                </div>
+                <div class="card-icon">
+                     <img src="image/booking-list.png" alt="icon">
+                </div>
+            </div>
+
+            <div class="card card-green">
+                <div class="card-info">
+                    <h3>Completed Jobs</h3>
+                    <h2 id="completed-count">...</h2>
+                </div>
+                <div class="card-icon">
+                     <img src="image/check-mark.png" alt="icon">
+                </div>
+            </div>
+
+            <div class="card card-red">
+                <div class="card-info">
+                    <h3>Average Rating</h3>
+                    <h2>4.8 ⭐</h2> <!-- Ise hum baad me aage setup karenge -->
+                </div>
+                <div class="card-icon">
+                     <img src="image/star-feedback.png" alt="icon">
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Bookings Table -->
+        <section class="table-section">
+            <div class="table-header">
+                <h2>Recent Bookings</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- API se Data laane wala JavaScript -->
+    <script>
+        // Aapka naya Web App URL
+        const apiUrl = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
+
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                let total = data.length;
+                let pending = 0;
+                let completed = 0;
+                let tableHTML = "";
+                
+                // Data ko ulta padhna (taaki sabse nayi booking sabse upar aaye)
+                for(let i = data.length - 1; i >= 0; i--) {
+                    let row = data[i];
+                    
+                    // Ginti (Count) update karna
+                    if(row.status === "Pending") {
+                        pending++;
+                    } else {
+                        completed++;
+                    }
+                    
+                    // Date ko chhota aur sundar banana
+                    let dateObj = new Date(row.timestamp);
+                    let formattedDate = dateObj.toLocaleDateString('en-IN');
+
+                    // Status ka rang set karne ke liye class
+                    let statusClass = row.status === "Pending" ? "pending" : "completed";
+
+                    // Table me naya row banana
+                    tableHTML += `
+                    <tr>
+                        <td><strong>${row.name}</strong><br><small style="color:var(--text-gray);">${row.phone}</small></td>
+                        <td>${row.service}</td>
+                        <td>${formattedDate}</td>
+                        <td><span class="status ${statusClass}">${row.status}</span></td>
+                        <td>
+                            <button class="action-btn btn-accept" title="Mark Complete"><img src="image/check-mark.png" alt="Accept"></button>
+                        </td>
+                    </tr>
+                    `;
+                }
+                
+                // Screen par asli numbers aur table dikhana
+                document.getElementById('total-count').innerText = total;
+                document.getElementById('pending-count').innerText = pending;
+                document.getElementById('completed-count').innerText = completed;
+                
+                // Agar koi booking nahi hai toh message dikhana
+                if(total === 0) {
+                    document.getElementById('table-body').innerHTML = `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>`;
+                } else {
+                    document.getElementById('table-body').innerHTML = tableHTML;
+                }
+                
+            } catch(error) {
+                console.error("Data laane me error aayi:", error);
+                document.getElementById('table-body').innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Failed to load data. Check internet connection.</td></tr>`;
+            }
+        }
+
+        // Jaise hi website khule, data automatically aa jaye
+        window.onload = fetchDashboardData;
+    </script>
+</body>
+</html>
