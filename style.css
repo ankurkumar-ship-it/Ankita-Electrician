@@ -459,3 +459,64 @@ body {
 .modal-overlay[style*="display: none"] {
     display: none !important;
 }
+
+/* =========================================
+   Premium Language Selection Box Design
+========================================== */
+.modal-box {
+    background-color: var(--card-bg); /* Dark premium background */
+    border: 2px solid var(--primary-yellow); /* Yellow outline */
+    padding: 40px 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6); /* Bada shadow 3D effect ke liye */
+    animation: popIn 0.4s ease-out forwards;
+}
+
+.modal-box h2 {
+    color: var(--primary-yellow);
+    font-size: 24px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.modal-box p {
+    color: var(--text-gray);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* Button ke beech ki jagah */
+.lang-btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Buttons ka design */
+.lang-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-white);
+}
+
+.lang-btn.english {
+    background-color: var(--blue-accent);
+}
+
+.lang-btn.hindi {
+    background-color: var(--success-green);
+}
+
+/* Button par mouse/finger le jane par animation */
+.lang-btn:hover {
+    transform: translateY(-4px); /* Button thoda upar uthega */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
