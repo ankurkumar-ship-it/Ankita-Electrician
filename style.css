@@ -440,3 +440,22 @@ body {
     height: 35px;
     /* Agar image ka color change karna ho */
 }
+
+/* Modal Overlay - Popup ko hamesha screen ke beech me fix karne ke liye */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Background ko halka kala (dark) karega */
+    display: flex !important; /* Dhyan rahe, HTML me inline none se change hokar flex hoga JS ke through */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Isko sabse aage (top) par rakhne ke liye */
+}
+
+/* Jab modal hide ho toh usko display none karne ke liye */
+.modal-overlay[style*="display: none"] {
+    display: none !important;
+}
