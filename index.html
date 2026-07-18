@@ -180,6 +180,14 @@
         <div class="footer-contact">
             <p><strong>Email:</strong> <a href="mailto:rubyvineshkumarsingh@gmail.com">rubyvineshkumarsingh@gmail.com</a> | <strong>Support:</strong> <a href="mailto:vineshkumarsingh32@gmail.com">vineshkumarsingh32@gmail.com</a></p>
         </div>
+        <!-- NAYA: Premium Language Selector Footer me -->
+        <div class="footer-lang-section">
+            <span style="color: var(--text-gray); font-size: 15px; margin-right: 15px;">App Language:</span>
+            <select class="premium-lang-select">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+            </select>
+        </div>
         <div class="footer-legal">
             <div class="legal-links">
                 <a href="#">Terms & conditions</a>
@@ -197,7 +205,7 @@
         // Language Modal Close
         function closeLanguageModal(lang) {
             document.getElementById('language-modal').style.display = 'none';
-            document.querySelector('.nav-lang-select').value = lang;
+            document.querySelector('.premium-lang-select').value = lang;
         }
 
         // Success Modal ko (X) dabakar band karne ka function
