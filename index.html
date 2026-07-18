@@ -204,20 +204,34 @@
         </div>
     </footer>
 
-    <!-- JavaScript Jadoo -->
+    <!-- Pura Naya aur Clean JavaScript -->
     <script>
-        // Language Modal Close
+        // 1. Language Modal Close Function (Fixed)
         function closeLanguageModal(lang) {
             document.getElementById('language-modal').style.display = 'none';
-            document.querySelector('.premium-lang-select').value = lang;
+            
+            // Naye premium dropdown ki bhasha badalna
+            let premiumSelect = document.querySelector('.premium-lang-select');
+            if(premiumSelect) {
+                premiumSelect.value = lang;
+            }
         }
 
-        // Success Modal ko (X) dabakar band karne ka function
+        // 2. Service Icon par click karne se form par jana aur auto-select karna
+        function selectServiceAndScroll(serviceName) {
+            let serviceDropdown = document.getElementById('custService');
+            if(serviceDropdown) {
+                serviceDropdown.value = serviceName; 
+            }
+            window.location.href = '#booking-area'; 
+        }
+
+        // 3. Success Modal (Booking) ko (X) dabakar band karne ka function
         function closeSuccessModal() {
             document.getElementById('success-modal').style.display = 'none';
         }
 
-        // Form Submit & WhatsApp Logic
+        // 4. Form Submit & WhatsApp Logic
         document.getElementById('bookingForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
@@ -229,15 +243,14 @@
             let service = document.getElementById('custService').value;
             let problem = document.getElementById('custProblem').value;
 
-            // NAYA SOUND PLAY FIX
+            // Sound Play Fix
             let audio = document.getElementById('successSound');
             if(audio) {
-                audio.currentTime = 0; // Taaki har baar form bharne par shuru se baje
+                audio.currentTime = 0; 
                 let playPromise = audio.play();
-                
                 if (playPromise !== undefined) {
                     playPromise.catch(function(error) {
-                        console.log("Browser ne sound auto-play block kar diya:", error);
+                        console.log("Browser block:", error);
                     });
                 }
             }
@@ -256,21 +269,19 @@
             let encodedMessage = encodeURIComponent(whatsappMessage);
             let whatsappURL = `https://wa.me/918298250952?text=${encodedMessage}`;
 
-            // 3 seconds baad WhatsApp khulega
+            // 3 seconds baad WhatsApp khulega aur form khali hoga
             setTimeout(function() {
                 document.getElementById('success-modal').style.display = 'none';
                 window.open(whatsappURL, '_blank');
                 document.getElementById('bookingForm').reset(); 
+                
+                // Form reset hone ke baad date/time wapas normal text ban jayein
+                document.getElementById('custDate').type = 'text';
+                document.getElementById('custTime').type = 'text';
             }, 3000); 
         });
 
-        // NAYA: Service Icon par click karne se form par jana aur auto-select karna
-        function selectServiceAndScroll(serviceName) {
-            document.getElementById('custService').value = serviceName; // Dropdown set karega
-            window.location.href = '#booking-area'; // Form par scroll karega
-        }
-
-        // NAYA: Feedback Form Popup Kholna aur Band karna
+        // 5. Feedback Form Popup Kholna aur Band karna
         function openFeedbackForm() {
             document.getElementById('feedback-entry-modal').style.display = 'flex';
         }
@@ -279,33 +290,19 @@
             document.getElementById('feedback-entry-modal').style.display = 'none';
         }
 
-        // Feedback Submit hone par
+        // 6. Feedback Submit hone par
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Page reload hone se rokega
-
+            event.preventDefault(); 
             closeFeedbackForm(); // Form wala popup band karega
 
             // Feedback Success (Thank You Box) dikhana
             document.getElementById('feedback-success-modal').style.display = 'flex';
 
-            // 3 seconds baad popup apne aap band ho jaye aur form khali ho jaye
             setTimeout(function() {
                 document.getElementById('feedback-success-modal').style.display = 'none';
                 document.getElementById('feedbackForm').reset(); 
             }, 3000); 
         });
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
     </script>
 </body>
 </html>
