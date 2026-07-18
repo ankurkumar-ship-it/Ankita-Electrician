@@ -136,58 +136,89 @@
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 
-                let total = data.length;
+                // Naye structure me data do hisso me aayega
+                let bookings = data.bookings;
+                let feedbacks = data.feedbacks;
+                
+                // --- 1. BOOKING & CUSTOMER LOGIC ---
+                let total = bookings.length;
                 let pending = 0;
                 let completed = 0;
                 let tableHTML = "";
+                let customerHTML = "";
                 
-                // Data ko ulta padhna (taaki sabse nayi booking sabse upar aaye)
-                for(let i = data.length - 1; i >= 0; i--) {
-                    let row = data[i];
+                for(let i = bookings.length - 1; i >= 0; i--) {
+                    let row = bookings[i];
                     
-                    // Ginti (Count) update karna
-                    if(row.status === "Pending") {
-                        pending++;
-                    } else {
-                        completed++;
-                    }
+                    if(row.status === "Pending") pending++;
+                    else if(row.status === "Completed") completed++;
                     
-                    // Date ko chhota aur sundar banana
                     let dateObj = new Date(row.timestamp);
                     let formattedDate = dateObj.toLocaleDateString('en-IN');
+                    
+                    let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
-                    // Status ka rang set karne ke liye class
-                    let statusClass = row.status === "Pending" ? "pending" : "completed";
+                    let actionButtons = row.status === "Pending" ? `
+                        <button class="action-btn btn-accept" onclick="updateStatus(${row.rowIndex}, 'Completed')" title="Mark Complete"><img src="image/check-mark.png" alt="Complete"></button>
+                        <button class="action-btn btn-cancel" onclick="updateStatus(${row.rowIndex}, 'Cancelled')" title="Cancel Booking"><img src="image/cancel.png" alt="Cancel"></button>
+                    ` : `<span style="color: gray; font-size: 13px; font-weight: bold;">${row.status}</span>`;
 
-                    // Table me naya row banana
                     tableHTML += `
                     <tr>
                         <td><strong>${row.name}</strong><br><small style="color:var(--text-gray);">${row.phone}</small></td>
                         <td>${row.service}</td>
                         <td>${formattedDate}</td>
                         <td><span class="status ${statusClass}">${row.status}</span></td>
-                        <td>
-                            <button class="action-btn btn-accept" title="Mark Complete"><img src="image/check-mark.png" alt="Accept"></button>
-                        </td>
-                    </tr>
-                    `;
+                        <td>${actionButtons}</td>
+                    </tr>`;
+
+                    customerHTML += `
+                    <tr>
+                        <td><strong>${row.name}</strong></td>
+                        <td><a href="tel:${row.phone}" style="color: var(--accent-blue); text-decoration: none;">${row.phone}</a></td>
+                        <td>${row.address}</td>
+                    </tr>`;
                 }
                 
-                // Screen par asli numbers aur table dikhana
                 document.getElementById('total-count').innerText = total;
                 document.getElementById('pending-count').innerText = pending;
                 document.getElementById('completed-count').innerText = completed;
                 
-                // Agar koi booking nahi hai toh message dikhana
-                if(total === 0) {
-                    document.getElementById('table-body').innerHTML = `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>`;
+                document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
+                document.getElementById('customer-table-body').innerHTML = total === 0 ? `<tr><td colspan="3" style="text-align: center;">No customers found.</td></tr>` : customerHTML;
+
+                // --- 2. FEEDBACK LOGIC & AVERAGE RATING ---
+                let feedbackHTML = "";
+                let totalRating = 0;
+                let feedbackCount = feedbacks.length;
+
+                if (feedbackCount === 0) {
+                    feedbackHTML = `<tr><td colspan="3" style="text-align: center;">Abhi tak koi feedback nahi aaya.</td></tr>`;
+                    document.getElementById('average-rating').innerText = "0 ⭐";
                 } else {
-                    document.getElementById('table-body').innerHTML = tableHTML;
+                    for(let i = feedbacks.length - 1; i >= 0; i--) {
+                        let fRow = feedbacks[i];
+                        totalRating += Number(fRow.rating); // Sabki rating jodhna
+                        
+                        // Stars banayein (Jaise 5 select kiya toh 5 stars)
+                        let stars = "⭐".repeat(fRow.rating);
+
+                        feedbackHTML += `
+                        <tr>
+                            <td><strong>${fRow.name}</strong></td>
+                            <td>${stars}</td>
+                            <td>${fRow.experience}</td>
+                        </tr>`;
+                    }
+                    
+                    // Average nikalna aur Dashboard par lagana
+                    let avgRating = (totalRating / feedbackCount).toFixed(1);
+                    document.getElementById('average-rating').innerText = `${avgRating} ⭐`;
+                    document.getElementById('feedback-table-body').innerHTML = feedbackHTML;
                 }
                 
             } catch(error) {
-                console.error("Data laane me error aayi:", error);
-                document.getElementById('table-body').innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">Failed to load data. Check internet connection.</td></tr>`;
+                console.error("Data laane me error:", error);
             }
         }
 
