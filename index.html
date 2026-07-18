@@ -29,93 +29,90 @@
         </div>
 
         <div class="header-right">
-            
+           <!-- NUMBER HATAKAR CALL NOW LIKHA GAYA -->
            <a href="tel:+918298250952" class="contact-section" style="text-decoration: none; color: white;">
                 <img src="image/call.png" alt="Call" class="nav-icon">
-                <span class="phone-number">+91 8298250952</span>
+                <span id="call-btn" class="phone-number">Call Now</span>
             </a>
         </div>
     </header>
 
     <!-- Hero Section (Main Banner) -->
     <section class="hero">
-        <h2>The most trusted electrician for your home!</h2>
-        <p>Wiring, repairs, or installation—whatever the job, book an appointment now.</p>
+        <h2 id="hero-title">The most trusted electrician for your home!</h2>
+        <p id="hero-desc">Wiring, repairs, or installation—whatever the job, book an appointment now.</p>
     </section>
 
     <!-- Services Section -->
     <section class="services">
-        <h2 class="section-title">Services</h2>
+        <h2 id="sec-serv" class="section-title">Services</h2>
         
         <div class="services-container">
             <!-- Card 1 -->
             <div class="service-card" onclick="selectServiceAndScroll('House Wiring')" style="cursor: pointer;">
                 <img src="image/home.png" alt="House Wiring">
-                <h3>House Wiring</h3>
-                <p>Installation of new wiring, or fault finding and repair.</p>
+                <h3 id="hw-title">House Wiring</h3>
+                <p id="hw-desc">Installation of new wiring, or fault finding and repair.</p>
             </div>
             
             <!-- Card 2 -->
             <div class="service-card" onclick="selectServiceAndScroll('Inverter & Battery')" style="cursor: pointer;">
                 <img src="image/battery.png" alt="Inverter Service">
-                <h3>Inverter & Battery</h3>
-                <p>Installation of the new inverter and battery maintenance.</p>
+                <h3 id="ib-title">Inverter & Battery</h3>
+                <p id="ib-desc">Installation of the new inverter and battery maintenance.</p>
             </div>
             
             <!-- Card 3 -->
             <div class="service-card" onclick="selectServiceAndScroll('Switchboard / MCB')" style="cursor: pointer;">
                 <img src="image/power-plug.png" alt="Switchboard">
-                <h3>Switchboard</h3>
-                <p>Installing new switchboards or troubleshooting MCB tripping issues.</p>
+                <h3 id="sb-title">Switchboard</h3>
+                <p id="sb-desc">Installing new switchboards or troubleshooting MCB tripping issues.</p>
             </div>
             
             <!-- Card 4 -->
             <div class="service-card" onclick="selectServiceAndScroll('Fan Installing')" style="cursor: pointer;">
                 <img src="image/Fan.png" alt="Fan Installing">
-                <h3>Fan Installing</h3>
-                <p>Ceiling fan, wall fan, or exhaust fan installation and repair.</p>
+                <h3 id="fi-title">Fan Installing</h3>
+                <p id="fi-desc">Ceiling fan, wall fan, or exhaust fan installation and repair.</p>
             </div>
             
             <!-- Card 5 -->
             <div class="service-card" onclick="selectServiceAndScroll('Light Installing')" style="cursor: pointer;">
                 <img src="image/light.png" alt="Light Installing">
-                <h3>Light Installing</h3>
-                <p>Tube lights, LED panels, and fancy decorative lights installation.</p>
+                <h3 id="li-title">Light Installing</h3>
+                <p id="li-desc">Tube lights, LED panels, and fancy decorative lights installation.</p>
             </div>
         </div>
     </section>
+
     <!-- Audio File for Success Sound -->
     <audio id="successSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
-    <!-- Success Popup Modal (Image jaisa White Box) -->
+    <!-- Success Popup Modal (Booking) -->
     <div id="success-modal" class="modal-overlay" style="display: none;">
         <div class="success-box">
-            <!-- X Close Button -->
             <button class="close-btn" onclick="closeSuccessModal()">&#10005;</button>
-            
             <img src="image/check.png" alt="Success" class="success-icon">
             <h2>Success</h2>
             <p>Your booking was successful.<br>We will contact you shortly.</p>
         </div>
     </div>
-    <!-- Feedback Success Modal (Thank You Box) -->
+
+    <!-- Success Popup Modal (Feedback) -->
     <div id="feedback-success-modal" class="modal-overlay" style="display: none;">
         <div class="success-box">
-            <!-- X Close Button -->
-            <button class="close-btn" onclick="closeFeedbackModal()">&#10005;</button>
-            
-            <!-- Aapka Download Kiya Hua Thanks Icon -->
+            <button class="close-btn" onclick="document.getElementById('feedback-success-modal').style.display = 'none';">&#10005;</button>
             <img src="image/thanks.png" alt="Thank You" class="success-icon" style="width: 90px; height: 90px;">
             <h2>Thank You!</h2>
             <p>Aapka feedback hamare liye bahut zaroori hai.<br>Samay dene ke liye dhanyawad.</p>
         </div>
     </div>
+
     <!-- Booking Form Section -->
     <section class="booking-section" id="booking-area">
-        <h2 class="section-title">Appointment Book</h2>
+        <h2 id="app-title" class="section-title">Appointment Book</h2>
         <div class="form-container">
             <form id="bookingForm" class="booking-form">
-                <!-- Sabhi inputs me id add kiya hai taaki JS data utha sake -->
                 <input type="text" id="custName" placeholder="Full Name" required>
                 <input type="tel" id="custPhone" placeholder="Phone Number" required>
                 <input type="text" id="custAddress" placeholder="Address" required>
@@ -127,28 +124,28 @@
 
                 <select id="custService" required>
                     <option value="" disabled selected> Select Service </option>
-                    <option value="Fan Installing">Fan Installing</option>
-                    <option value="Light Installing">Light Installing</option>
                     <option value="House Wiring">House Wiring</option>
                     <option value="Inverter & Battery">Inverter & Battery</option>
                     <option value="Switchboard / MCB">Switchboard / MCB</option>
+                    <option value="Fan Installing">Fan Installing</option>
+                    <option value="Light Installing">Light Installing</option>
                     <option value="Other">Other</option>
                 </select>
 
                 <textarea id="custProblem" rows="4" placeholder="Write some details about the problem..." required></textarea>
 
                 <button type="submit" class="submit-btn">
-                    <span>Book Appointment</span>
+                    <span id="btn-book">Book Appointment</span>
                     <img src="image/send-mail.png" alt="Send" class="btn-icon">
                 </button>
             </form>
         </div>
     </section>
 
-    <!-- 3. Premium Feedback Button -->
+    <!-- Premium Feedback Button -->
     <section style="text-align: center; margin: 50px 0;">
-        <button onclick="openFeedbackForm()" class="premium-feedback-btn">
-            ⭐ Give Feedback ⭐
+        <button id="btn-feedback" onclick="openFeedbackForm()" class="premium-feedback-btn">
+            ⭐ Give Premium Feedback ⭐
         </button>
     </section>
 
@@ -156,23 +153,22 @@
     <div id="feedback-entry-modal" class="modal-overlay" style="display: none;">
         <div class="modal-box" style="padding: 30px; max-width: 500px; text-align: left;">
             <button class="close-btn" onclick="closeFeedbackForm()">&#10005;</button>
-            <h2 style="text-align: center; color: var(--primary-yellow); margin-bottom: 20px;">Customer Feedback</h2>
+            <h2 id="fb-title" style="text-align: center; color: var(--primary-yellow); margin-bottom: 20px;">Customer Feedback</h2>
             <form id="feedbackForm" class="booking-form">
-                <input type="text" placeholder="Your Name" required>
+                <input type="text" id="fbName" placeholder="Your Name" required>
                 <select required>
                     <option value="" disabled selected>Give Rating</option>
                     <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
                     <option value="4">⭐⭐⭐⭐ (Good)</option>
                     <option value="3">⭐⭐⭐ (Average)</option>
                 </select>
-                <textarea rows="4" placeholder="Share your experience with us..." required></textarea>
+                <textarea id="fbExp" rows="4" placeholder="Share your experience with us..." required></textarea>
                 <button type="submit" class="submit-btn" style="background-color: var(--success-green); width: 100%;">
-                    <span>Submit Feedback</span>
+                    <span id="btn-submit-fb">Submit Feedback</span>
                 </button>
             </form>
         </div>
     </div>
-    </section>
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/918298250952" target="_blank" class="whatsapp-float">
@@ -181,16 +177,17 @@
 
     <!-- Footer Section -->
     <footer class="footer">
-        <div class="footer-contact">
-            <p><strong>Email:</strong> <a href="mailto:rubyvineshkumarsingh@gmail.com">rubyvineshkumarsingh@gmail.com</a> | <strong>Support:</strong> <a href="mailto:vineshkumarsingh32@gmail.com">vineshkumarsingh32@gmail.com</a></p>
-        </div>
-        <!-- NAYA: Premium Language Selector Footer me -->
+        <!-- NAYA: Premium Language Selector Footer me (onchange event ke sath) -->
         <div class="footer-lang-section">
             <span style="color: var(--text-gray); font-size: 15px; margin-right: 15px;">App Language:</span>
-            <select class="premium-lang-select">
+            <select class="premium-lang-select" onchange="changeLanguage(this.value)">
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
             </select>
+        </div>
+
+        <div class="footer-contact">
+            <p><strong>Email:</strong> <a href="mailto:rubyvineshkumarsingh@gmail.com">rubyvineshkumarsingh@gmail.com</a> | <strong>Support:</strong> <a href="mailto:vineshkumarsingh32@gmail.com">vineshkumarsingh32@gmail.com</a></p>
         </div>
         <div class="footer-legal">
             <div class="legal-links">
@@ -200,24 +197,112 @@
                 <a href="#">Copyrights Notification</a>
                 <a href="#">Cookies Settings</a>
             </div>
-            <p class="copyright-text">Copyright &copy; 2013-2026 Ankita Electrician. All rights reserved.</p>
+            <p class="copyright-text">Copyright &copy; 2026 Ankita Electrician. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Pura Naya aur Clean JavaScript -->
+    <!-- JavaScript (Translation + Logic) -->
     <script>
-        // 1. Language Modal Close Function (Fixed)
-        function closeLanguageModal(lang) {
-            document.getElementById('language-modal').style.display = 'none';
-            
-            // Naye premium dropdown ki bhasha badalna
+        // --- NAYA: TRANSLATION DICTIONARY (English & Hindi) ---
+        const translations = {
+            "en": {
+                "call-btn": "Call Now",
+                "hero-title": "The most trusted electrician for your home!",
+                "hero-desc": "Wiring, repairs, or installation—whatever the job, book an appointment now.",
+                "sec-serv": "Services",
+                "hw-title": "House Wiring",
+                "hw-desc": "Installation of new wiring, or fault finding and repair.",
+                "ib-title": "Inverter & Battery",
+                "ib-desc": "Installation of the new inverter and battery maintenance.",
+                "sb-title": "Switchboard",
+                "sb-desc": "Installing new switchboards or troubleshooting MCB tripping issues.",
+                "fi-title": "Fan Installing",
+                "fi-desc": "Ceiling fan, wall fan, or exhaust fan installation and repair.",
+                "li-title": "Light Installing",
+                "li-desc": "Tube lights, LED panels, and fancy decorative lights installation.",
+                "app-title": "Appointment Book",
+                "btn-book": "Book Appointment",
+                "btn-feedback": "⭐ Give Premium Feedback ⭐",
+                "fb-title": "Customer Feedback",
+                "btn-submit-fb": "Submit Feedback"
+            },
+            "hi": {
+                "call-btn": "कॉल करें",
+                "hero-title": "आपके घर के लिए सबसे भरोसेमंद इलेक्ट्रीशियन!",
+                "hero-desc": "वायरिंग, रिपेयरिंग या इंस्टॉलेशन—कोई भी काम हो, अभी अपॉइंटमेंट बुक करें।",
+                "sec-serv": "सेवाएं",
+                "hw-title": "हाउस वायरिंग",
+                "hw-desc": "नई वायरिंग का इंस्टॉलेशन, या फॉल्ट खोजना और रिपेयर करना।",
+                "ib-title": "इन्वर्टर और बैटरी",
+                "ib-desc": "नए इन्वर्टर का इंस्टॉलेशन और बैटरी मेंटेनेंस।",
+                "sb-title": "स्विचबोर्ड",
+                "sb-desc": "नए स्विचबोर्ड लगाना या MCB ट्रिपिंग की समस्या ठीक करना।",
+                "fi-title": "पंखे लगाना",
+                "fi-desc": "सीलिंग फैन, वॉल फैन, या एग्जॉस्ट फैन लगाना और रिपेयर करना।",
+                "li-title": "लाइट लगाना",
+                "li-desc": "ट्यूब लाइट, LED पैनल, और फैंसी लाइट लगाना।",
+                "app-title": "अपॉइंटमेंट बुक करें",
+                "btn-book": "बुक अपॉइंटमेंट",
+                "btn-feedback": "⭐ अपना फीडबैक दें ⭐",
+                "fb-title": "ग्राहक की राय",
+                "btn-submit-fb": "फीडबैक सबमिट करें"
+            }
+        };
+
+        // Form Placeholder Translation
+        const placeholders = {
+            "en": {
+                "custName": "Full Name",
+                "custPhone": "Phone Number",
+                "custAddress": "Address",
+                "custDate": "Select Date",
+                "custTime": "Select Time",
+                "custProblem": "Write some details about the problem...",
+                "fbName": "Your Name",
+                "fbExp": "Share your experience with us..."
+            },
+            "hi": {
+                "custName": "पूरा नाम",
+                "custPhone": "फ़ोन नंबर",
+                "custAddress": "पूरा पता",
+                "custDate": "तारीख चुनें",
+                "custTime": "समय चुनें",
+                "custProblem": "समस्या के बारे में कुछ जानकारी लिखें...",
+                "fbName": "आपका नाम",
+                "fbExp": "अपना अनुभव हमारे साथ साझा करें..."
+            }
+        };
+
+        // Bhasha Badalane ka Main Function
+        function changeLanguage(lang) {
+            // Text change karna
+            for (let id in translations[lang]) {
+                let element = document.getElementById(id);
+                if (element) {
+                    element.innerText = translations[lang][id];
+                }
+            }
+            // Form box (Placeholders) change karna
+            for (let id in placeholders[lang]) {
+                let element = document.getElementById(id);
+                if (element) {
+                    element.placeholder = placeholders[lang][id];
+                }
+            }
+            // Footer wale dropdown ko bhi update karna
             let premiumSelect = document.querySelector('.premium-lang-select');
-            if(premiumSelect) {
+            if (premiumSelect) {
                 premiumSelect.value = lang;
             }
         }
 
-        // 2. Service Icon par click karne se form par jana aur auto-select karna
+        // --- BAAKI PURANA SAHI CHALNE WALA LOGIC ---
+
+        function closeLanguageModal(lang) {
+            document.getElementById('language-modal').style.display = 'none';
+            changeLanguage(lang); // Modal band hote hi bhasha badal jayegi
+        }
+
         function selectServiceAndScroll(serviceName) {
             let serviceDropdown = document.getElementById('custService');
             if(serviceDropdown) {
@@ -226,12 +311,10 @@
             window.location.href = '#booking-area'; 
         }
 
-        // 3. Success Modal (Booking) ko (X) dabakar band karne ka function
         function closeSuccessModal() {
             document.getElementById('success-modal').style.display = 'none';
         }
 
-        // 4. Form Submit & WhatsApp Logic
         document.getElementById('bookingForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
@@ -243,19 +326,15 @@
             let service = document.getElementById('custService').value;
             let problem = document.getElementById('custProblem').value;
 
-            // Sound Play Fix
             let audio = document.getElementById('successSound');
             if(audio) {
                 audio.currentTime = 0; 
                 let playPromise = audio.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(function(error) {
-                        console.log("Browser block:", error);
-                    });
+                    playPromise.catch(function(error) { console.log("Browser block:", error); });
                 }
             }
 
-            // Success Popup dikhana
             document.getElementById('success-modal').style.display = 'flex';
 
             let whatsappMessage = `*New Appointment Booking!* ⚡\n\n` +
@@ -269,19 +348,15 @@
             let encodedMessage = encodeURIComponent(whatsappMessage);
             let whatsappURL = `https://wa.me/918298250952?text=${encodedMessage}`;
 
-            // 3 seconds baad WhatsApp khulega aur form khali hoga
             setTimeout(function() {
                 document.getElementById('success-modal').style.display = 'none';
                 window.open(whatsappURL, '_blank');
                 document.getElementById('bookingForm').reset(); 
-                
-                // Form reset hone ke baad date/time wapas normal text ban jayein
                 document.getElementById('custDate').type = 'text';
                 document.getElementById('custTime').type = 'text';
             }, 3000); 
         });
 
-        // 5. Feedback Form Popup Kholna aur Band karna
         function openFeedbackForm() {
             document.getElementById('feedback-entry-modal').style.display = 'flex';
         }
@@ -290,12 +365,10 @@
             document.getElementById('feedback-entry-modal').style.display = 'none';
         }
 
-        // 6. Feedback Submit hone par
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
-            closeFeedbackForm(); // Form wala popup band karega
+            closeFeedbackForm(); 
 
-            // Feedback Success (Thank You Box) dikhana
             document.getElementById('feedback-success-modal').style.display = 'flex';
 
             setTimeout(function() {
@@ -303,6 +376,19 @@
                 document.getElementById('feedbackForm').reset(); 
             }, 3000); 
         });
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
