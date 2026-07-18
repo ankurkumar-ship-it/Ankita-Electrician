@@ -192,15 +192,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript For Popup -->
-    <script>
-        function closeLanguageModal(lang) {
-            // Popup ko hide karna
-            document.getElementById('language-modal').style.display = 'none';
-            // Navbar wale dropdown ko update karna
-            document.querySelector('.nav-lang-select').value = lang;
-        }
-    </script>
     <!-- JavaScript Jadoo -->
     <script>
         // Language Modal Close
@@ -260,6 +251,7 @@
                 document.getElementById('bookingForm').reset(); 
             }, 3000); 
         });
+
         // NAYA: Feedback Modal ko (X) dabakar band karne ka function
         function closeFeedbackModal() {
             document.getElementById('feedback-success-modal').style.display = 'none';
@@ -280,22 +272,7 @@
         });
     </script>
 
-    // Feedback Form Submit Logic
-        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Page reload hone se rokega
-
-            // Feedback Success Popup (White Box) dikhana
-            document.getElementById('feedback-success-modal').style.display = 'flex';
-
-            // 3 seconds baad popup apne aap band ho jaye aur form khali ho jaye
-            setTimeout(function() {
-                closeFeedbackModal();
-                document.getElementById('feedbackForm').reset(); 
-            }, 3000); 
-        });
-    </script>
-
-    <!-- Service Worker Registration YAHAN DALNA HAI -->
+    <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
