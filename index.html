@@ -167,18 +167,20 @@
             <button class="close-btn" onclick="closeFeedbackForm()">&#10005;</button>
             <h2 id="fb-title" style="text-align: center; color: var(--primary-yellow); margin-bottom: 20px;">Customer Feedback</h2>
             <form id="feedbackForm" class="booking-form">
-                <input type="text" id="fbName" placeholder="Your Name" required>
-                <select required>
-                    <option value="" disabled selected>Give Rating</option>
-                    <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-                    <option value="4">⭐⭐⭐⭐ (Good)</option>
-                    <option value="3">⭐⭐⭐ (Average)</option>
-                </select>
-                <textarea id="fbExp" rows="4" placeholder="Share your experience with us..." required></textarea>
-                <button type="submit" class="submit-btn" style="background-color: var(--success-green); width: 100%;">
-                    <span id="btn-submit-fb">Submit Feedback</span>
-                </button>
-            </form>
+    <input type="text" id="fbName" name="name" placeholder="Your Name" required>
+    <select id="fbRating" name="rating" required>
+        <option value="" disabled selected>Give Rating</option>
+        <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+        <option value="4">⭐⭐⭐⭐ (Good)</option>
+        <option value="3">⭐⭐⭐ (Average)</option>
+        <option value="2">⭐⭐ (Poor)</option>
+        <option value="1">⭐ (Very Bad)</option>
+    </select>
+    <textarea id="fbExp" name="experience" rows="4" placeholder="Share your experience with us..." required></textarea>
+    <button type="submit" class="submit-btn" id="submit-fb-btn" style="background-color: var(--success-green); width: 100%;">
+        <span id="btn-submit-fb">Submit Feedback</span>
+    </button>
+</form>
         </div>
     </div>
 
@@ -370,25 +372,39 @@
         });
 
         // Feedback Form Logic
-        function openFeedbackForm() {
-            document.getElementById('feedback-entry-modal').style.display = 'flex';
-        }
-
-        function closeFeedbackForm() {
-            document.getElementById('feedback-entry-modal').style.display = 'none';
-        }
-
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            closeFeedbackForm(); 
+    event.preventDefault(); 
+    
+    const submitBtn = document.getElementById('submit-fb-btn');
+    const btnTextSpan = document.getElementById('btn-submit-fb');
+    const originalText = btnTextSpan.innerHTML;
+    
+    btnTextSpan.innerHTML = "Submitting...";
+    submitBtn.disabled = true;
 
-            document.getElementById('feedback-success-modal').style.display = 'flex';
+    // Data collect karke action = "feedback" set karna
+    let formData = new FormData(this);
+    formData.append("action", "feedback"); 
 
-            setTimeout(function() {
-                document.getElementById('feedback-success-modal').style.display = 'none';
-                document.getElementById('feedbackForm').reset(); 
-            }, 3000); 
-        });
+    fetch(scriptURL, { method: 'POST', body: formData })
+      .then(response => {
+          closeFeedbackForm(); 
+          document.getElementById('feedback-success-modal').style.display = 'flex';
+          this.reset(); 
+          
+          btnTextSpan.innerHTML = originalText;
+          submitBtn.disabled = false;
+
+          setTimeout(function() {
+              document.getElementById('feedback-success-modal').style.display = 'none';
+          }, 3000); 
+      })
+      .catch(error => {
+          alert("Error saving feedback. Please try again.");
+          btnTextSpan.innerHTML = originalText;
+          submitBtn.disabled = false;
+      });
+});
     </script>
 
     <!-- Service Worker Registration -->
