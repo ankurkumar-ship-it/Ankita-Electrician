@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ankita Electrician | Reliable Service</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
@@ -277,6 +278,34 @@
                 document.getElementById('feedbackForm').reset(); 
             }, 3000); 
         });
+    </script>
+
+    // Feedback Form Submit Logic
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Page reload hone se rokega
+
+            // Feedback Success Popup (White Box) dikhana
+            document.getElementById('feedback-success-modal').style.display = 'flex';
+
+            // 3 seconds baad popup apne aap band ho jaye aur form khali ho jaye
+            setTimeout(function() {
+                closeFeedbackModal();
+                document.getElementById('feedbackForm').reset(); 
+            }, 3000); 
+        });
+    </script>
+
+    <!-- Service Worker Registration YAHAN DALNA HAI -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
