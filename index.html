@@ -49,35 +49,35 @@
         
         <div class="services-container">
             <!-- Card 1 -->
-            <div class="service-card" onclick="window.location.href='#booking-area'" style="cursor: pointer;">
+            <div class="service-card" onclick="selectServiceAndScroll('House Wiring')" style="cursor: pointer;">
                 <img src="image/home.png" alt="House Wiring">
                 <h3>House Wiring</h3>
                 <p>Installation of new wiring, or fault finding and repair.</p>
             </div>
             
             <!-- Card 2 -->
-            <div class="service-card" onclick="window.location.href='#booking-area'" style="cursor: pointer;">
+            <div class="service-card" onclick="selectServiceAndScroll('Inverter & Battery')" style="cursor: pointer;">
                 <img src="image/battery.png" alt="Inverter Service">
                 <h3>Inverter & Battery</h3>
                 <p>Installation of the new inverter and battery maintenance.</p>
             </div>
             
             <!-- Card 3 -->
-            <div class="service-card" onclick="window.location.href='#booking-area'" style="cursor: pointer;">
+            <div class="service-card" onclick="selectServiceAndScroll('Switchboard / MCB')" style="cursor: pointer;">
                 <img src="image/power-plug.png" alt="Switchboard">
                 <h3>Switchboard</h3>
                 <p>Installing new switchboards or troubleshooting MCB tripping issues.</p>
             </div>
             
             <!-- Card 4 -->
-            <div class="service-card" onclick="window.location.href='#booking-area'" style="cursor: pointer;">
+            <div class="service-card" onclick="selectServiceAndScroll('Fan Installing')" style="cursor: pointer;">
                 <img src="image/Fan.png" alt="Fan Installing">
                 <h3>Fan Installing</h3>
                 <p>Ceiling fan, wall fan, or exhaust fan installation and repair.</p>
             </div>
             
             <!-- Card 5 -->
-            <div class="service-card" onclick="window.location.href='#booking-area'" style="cursor: pointer;">
+            <div class="service-card" onclick="selectServiceAndScroll('Light Installing')" style="cursor: pointer;">
                 <img src="image/light.png" alt="Light Installing">
                 <h3>Light Installing</h3>
                 <p>Tube lights, LED panels, and fancy decorative lights installation.</p>
@@ -145,10 +145,18 @@
         </div>
     </section>
 
-    <!-- 3. Feedback Section -->
-    <section class="booking-section" style="margin-top: 20px;">
-        <h2 class="section-title">Customer Feedback</h2>
-        <div class="form-container">
+    <!-- 3. Premium Feedback Button -->
+    <section style="text-align: center; margin: 50px 0;">
+        <button onclick="openFeedbackForm()" class="premium-feedback-btn">
+            ⭐ Give Premium Feedback ⭐
+        </button>
+    </section>
+
+    <!-- Feedback Entry Modal (Popup Form) -->
+    <div id="feedback-entry-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-box" style="padding: 30px; max-width: 500px; text-align: left;">
+            <button class="close-btn" onclick="closeFeedbackForm()">&#10005;</button>
+            <h2 style="text-align: center; color: var(--primary-yellow); margin-bottom: 20px;">Customer Feedback</h2>
             <form id="feedbackForm" class="booking-form">
                 <input type="text" placeholder="Your Name" required>
                 <select required>
@@ -157,12 +165,13 @@
                     <option value="4">⭐⭐⭐⭐ (Good)</option>
                     <option value="3">⭐⭐⭐ (Average)</option>
                 </select>
-                <textarea rows="3" placeholder="Share your experience with us..." required></textarea>
-                <button type="submit" class="submit-btn" style="background-color: var(--success-green);">
+                <textarea rows="4" placeholder="Share your experience with us..." required></textarea>
+                <button type="submit" class="submit-btn" style="background-color: var(--success-green); width: 100%;">
                     <span>Submit Feedback</span>
                 </button>
             </form>
         </div>
+    </div>
     </section>
 
     <!-- Floating WhatsApp Button -->
@@ -255,25 +264,36 @@
             }, 3000); 
         });
 
-        // NAYA: Feedback Modal ko (X) dabakar band karne ka function
-        function closeFeedbackModal() {
-            document.getElementById('feedback-success-modal').style.display = 'none';
+        // NAYA: Service Icon par click karne se form par jana aur auto-select karna
+        function selectServiceAndScroll(serviceName) {
+            document.getElementById('custService').value = serviceName; // Dropdown set karega
+            window.location.href = '#booking-area'; // Form par scroll karega
         }
 
-        // Feedback Form Submit Logic
+        // NAYA: Feedback Form Popup Kholna aur Band karna
+        function openFeedbackForm() {
+            document.getElementById('feedback-entry-modal').style.display = 'flex';
+        }
+
+        function closeFeedbackForm() {
+            document.getElementById('feedback-entry-modal').style.display = 'none';
+        }
+
+        // Feedback Submit hone par
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Page reload hone se rokega
 
-            // Feedback Success Popup (White Box) dikhana
+            closeFeedbackForm(); // Form wala popup band karega
+
+            // Feedback Success (Thank You Box) dikhana
             document.getElementById('feedback-success-modal').style.display = 'flex';
 
             // 3 seconds baad popup apne aap band ho jaye aur form khali ho jaye
             setTimeout(function() {
-                closeFeedbackModal();
+                document.getElementById('feedback-success-modal').style.display = 'none';
                 document.getElementById('feedbackForm').reset(); 
             }, 3000); 
         });
-    </script>
 
     <!-- Service Worker Registration -->
     <script>
