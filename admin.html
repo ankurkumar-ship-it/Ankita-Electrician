@@ -13,24 +13,25 @@
         <div class="sidebar-header">
             <h2>Admin Panel</h2>
         </div>
-        <ul class="sidebar-menu"> <!-- Aapki class ka naam alag ho sakta hai -->
-    <li class="active" onclick="switchTab('dashboard-view', this)">
-        <img src="image/Dashboard.png" alt="Dashboard">
-        <span>Dashboard</span>
-    </li>
-    <li onclick="switchTab('bookings-view', this)">
-        <img src="image/booking-list.png" alt="Bookings">
-        <span>Bookings</span>
-    </li>
-    <li onclick="switchTab('customers-view', this)">
-        <img src="image/user.png" alt="Customers">
-        <span>Customers</span>
-    </li>
-    <li onclick="switchTab('feedback-view', this)">
-        <img src="image/star-feedback.png" alt="Feedback">
-        <span>Feedback</span>
-    </li>
-</ul>
+        <ul class="nav-links">
+            <!-- 1. Dashboard Tab -->
+            <li class="active" onclick="switchTab('dashboard-view', this)">
+                <img src="image/Dashboard.png" alt="Dashboard">
+                <span>Dashboard</span>
+            </li>
+            
+            <!-- 2. Customers Tab -->
+            <li onclick="switchTab('customers-view', this)">
+                <img src="image/user.png" alt="Customers">
+                <span>Customers</span>
+            </li>
+            
+            <!-- 3. Feedback Tab -->
+            <li onclick="switchTab('feedback-view', this)">
+                <img src="image/star-feedback.png" alt="Feedback">
+                <span>Feedback</span>
+            </li>
+        </ul>
         <div class="logout-box">
              <a href="index.html" class="logout-btn">
                 <img src="image/logout.png" alt="Logout Icon">
