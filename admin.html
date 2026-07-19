@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owner Dashboard - Ankita Electrician</title>
 
-<!-- Yeh 2 lines nayi hain -->
     <link rel="manifest" href="admin-manifest.json">
     <meta name="theme-color" content="#1a1a2e">
     
@@ -70,7 +69,7 @@
         <!-- ========================================== -->
         <div id="dashboard-view" class="view-section">
             
-            <!-- Top Navigation -->
+        <!-- Top Navigation -->
         <header class="top-nav" style="display: flex; align-items: center; gap: 15px;">
             <!-- Naya Logo Button (Click karne par menu khulega) -->
             <img src="image/icon.png" alt="Menu" id="menu-btn" onclick="toggleSidebar()" style="width: 45px; height: 45px; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
@@ -148,7 +147,10 @@
         <!-- ========================================== -->
         <div id="customers-view" class="view-section" style="display: none;">
             <div class="table-container">
-                <h2 style="color: white; margin-bottom: 15px;">Customer History & Details</h2>
+                <h2 style="color: white; margin-bottom: 15px;">
+                    <span onclick="switchTab('dashboard-view', document.querySelector('.nav-links li:first-child'))" style="cursor: pointer; margin-right: 15px; font-size: 24px; text-decoration: none;" title="Back to Dashboard">⬅️</span> 
+                    Customer History & Details
+                </h2>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -171,7 +173,10 @@
         <!-- ========================================== -->
         <div id="feedback-view" class="view-section" style="display: none;">
             <div class="table-container">
-                <h2 style="color: white; margin-bottom: 15px;">Customer Feedbacks</h2>
+                <h2 style="color: white; margin-bottom: 15px;">
+                    <span onclick="switchTab('dashboard-view', document.querySelector('.nav-links li:first-child'))" style="cursor: pointer; margin-right: 15px; font-size: 24px; text-decoration: none;" title="Back to Dashboard">⬅️</span> 
+                    Customer Feedbacks
+                </h2>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -188,25 +193,6 @@
         </div> <!-- YAHAN FEEDBACK VIEW KHATAM HUA -->
 
     </main>
-    <!-- CUSTOMERS VIEW SECTION -->
-        <div id="customers-view" class="view-section" style="display: none;">
-            <div class="table-container">
-                <h2 style="color: white; margin-bottom: 15px;">Customer History & Details</h2>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Customer Name & Date</th>
-                            <th>Service Details</th>
-                            <th>Address</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customer-table-body">
-                        <!-- Customer data aayega -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
     
     <!-- API se Data laane wala JavaScript -->
     <script>
@@ -250,7 +236,34 @@
         if(sidebar && sidebar.classList.contains('active')) {
             sidebar.classList.remove('active');
         }
+
+        // Phone ko batane ke liye ki page badla hai (Back Button Support)
+        if (history.state === null || history.state.tab !== tabId) {
+            history.pushState({ tab: tabId }, "", "#" + tabId);
+        }
     }
+
+    // --- Phone ka BACK BUTTON dabane par kya ho ---
+    window.addEventListener('popstate', function(event) {
+        let views = document.querySelectorAll('.view-section');
+        views.forEach(view => view.style.display = 'none');
+        
+        let menuItems = document.querySelectorAll('.nav-links li'); 
+        menuItems.forEach(item => item.classList.remove('active'));
+
+        if (event.state && event.state.tab) {
+            let target = document.getElementById(event.state.tab);
+            if(target) target.style.display = 'block';
+            
+            if(event.state.tab === 'dashboard-view' && menuItems[0]) menuItems[0].classList.add('active');
+            if(event.state.tab === 'customers-view' && menuItems[1]) menuItems[1].classList.add('active');
+            if(event.state.tab === 'feedback-view' && menuItems[2]) menuItems[2].classList.add('active');
+        } else {
+            let dash = document.getElementById('dashboard-view');
+            if(dash) dash.style.display = 'block';
+            if(menuItems[0]) menuItems[0].classList.add('active'); 
+        }
+    });
 
     // Global variable: Yaad rakhne ke liye ki pehle kitni bookings thi
     let lastBookingCount = -1; 
@@ -282,7 +295,7 @@
                 alert("🔔 Badhai ho! Ek nayi booking aayi hai! Dashboard refresh ho gaya hai.");
             }
             
-            // Current booking count ko save kar lo agli baar check karne ke liye
+            // Current booking count ko save kar lo
             lastBookingCount = total; 
             // ==========================================
 
@@ -399,6 +412,9 @@
 
     // Window khulte hi data load ho aur har 20 second me auto-refresh ho
     window.onload = () => {
+        // App khulte hi history me dashboard save kar do (Back button theek karne ke liye)
+        history.replaceState({ tab: 'dashboard-view' }, "", "#dashboard-view");
+        
         fetchDashboardData(); 
         setInterval(fetchDashboardData, 20000); // 20000 milliseconds = 20 seconds
     };
