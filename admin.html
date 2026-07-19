@@ -13,32 +13,24 @@
         <div class="sidebar-header">
             <h2>Admin Panel</h2>
         </div>
-        <ul class="nav-links">
-            <li class="active">
-                <a href="#">
-                    <img src="image/Dashboard.png" alt="Dashboard Icon">
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="image/booking-list.png" alt="Bookings Icon">
-                    <span>Bookings</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="image/user.png" alt="Customers Icon">
-                    <span>Customers</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="image/star-feedback.png" alt="Feedback Icon">
-                    <span>Feedback</span>
-                </a>
-            </li>
-        </ul>
+        <ul class="sidebar-menu"> <!-- Aapki class ka naam alag ho sakta hai -->
+    <li class="active" onclick="switchTab('dashboard-view', this)">
+        <img src="image/Dashboard.png" alt="Dashboard">
+        <span>Dashboard</span>
+    </li>
+    <li onclick="switchTab('bookings-view', this)">
+        <img src="image/booking-list.png" alt="Bookings">
+        <span>Bookings</span>
+    </li>
+    <li onclick="switchTab('customers-view', this)">
+        <img src="image/user.png" alt="Customers">
+        <span>Customers</span>
+    </li>
+    <li onclick="switchTab('feedback-view', this)">
+        <img src="image/star-feedback.png" alt="Feedback">
+        <span>Feedback</span>
+    </li>
+</ul>
         <div class="logout-box">
              <a href="index.html" class="logout-btn">
                 <img src="image/logout.png" alt="Logout Icon">
@@ -86,7 +78,7 @@
             <div class="card card-red" style="cursor: default;">
                 <div class="card-info">
                     <h3>Average Rating</h3>
-                    <h2 id="average-rating">4.8 ⭐</h2>
+                    <h2 id="average-rating">0 ⭐</h2>
                 </div>
                 <div class="card-icon"><img src="image/star-feedback.png" alt="icon"></div>
             </div>
@@ -120,122 +112,112 @@
 
     <!-- API se Data laane wala JavaScript -->
     <script>
-        // Aapka naya Web App URL
-        const apiUrl = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
+    const apiUrl = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
 
-        async function fetchDashboardData() {
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                
-                // Naye structure me data do hisso me aayega
-                let bookings = data.bookings;
-                let feedbacks = data.feedbacks;
-                
-                // --- 1. BOOKING & CUSTOMER LOGIC ---
-                let total = bookings.length;
-                let pending = 0;
-                let completed = 0;
-                let tableHTML = "";
-                let customerHTML = "";
-                
-                for(let i = bookings.length - 1; i >= 0; i--) {
-                    let row = bookings[i];
-                    
-                    if(row.status === "Pending") pending++;
-                    else if(row.status === "Completed") completed++;
-                    
-                    let dateObj = new Date(row.timestamp);
-                    let formattedDate = dateObj.toLocaleDateString('en-IN');
-                    
-                    let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
+    // --- 1. SIDE MENU (TAB) BADALNE KA MAGIC ---
+    function switchTab(tabId, clickedElement) {
+        // Saare views ko chhupao
+        let views = document.querySelectorAll('.view-section');
+        views.forEach(view => view.style.display = 'none');
+        
+        // Jisko click kiya usko dikhao
+        let targetView = document.getElementById(tabId);
+        if(targetView) targetView.style.display = 'block';
+        
+        // Menu me se purana active (highlight) hatao aur naye par lagao
+        let menuItems = document.querySelectorAll('li');
+        menuItems.forEach(item => item.classList.remove('active'));
+        if(clickedElement) clickedElement.classList.add('active');
+    }
 
-                    let actionButtons = row.status === "Pending" ? `
-                        <button class="action-btn btn-accept" onclick="updateStatus(${row.rowIndex}, 'Completed')" title="Mark Complete"><img src="image/check-mark.png" alt="Complete"></button>
-                        <button class="action-btn btn-cancel" onclick="updateStatus(${row.rowIndex}, 'Cancelled')" title="Cancel Booking"><img src="image/cancel.png" alt="Cancel"></button>
-                    ` : `<span style="color: gray; font-size: 13px; font-weight: bold;">${row.status}</span>`;
-
-                    tableHTML += `
-                    <tr>
-                        <td><strong>${row.name}</strong><br><small style="color:var(--text-gray);">${row.phone}</small></td>
-                        <td>${row.service}</td>
-                        <td>${formattedDate}</td>
-                        <td><span class="status ${statusClass}">${row.status}</span></td>
-                        <td>${actionButtons}</td>
-                    </tr>`;
-
-                    customerHTML += `
-                    <tr>
-                        <td><strong>${row.name}</strong></td>
-                        <td><a href="tel:${row.phone}" style="color: var(--accent-blue); text-decoration: none;">${row.phone}</a></td>
-                        <td>${row.address}</td>
-                    </tr>`;
-                }
-                
-                document.getElementById('total-count').innerText = total;
-                document.getElementById('pending-count').innerText = pending;
-                document.getElementById('completed-count').innerText = completed;
-                
-                document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
-                document.getElementById('customer-table-body').innerHTML = total === 0 ? `<tr><td colspan="3" style="text-align: center;">No customers found.</td></tr>` : customerHTML;
-
-                // --- 2. FEEDBACK LOGIC & AVERAGE RATING ---
-                let feedbackHTML = "";
-                let totalRating = 0;
-                let feedbackCount = feedbacks.length;
-
-                if (feedbackCount === 0) {
-                    feedbackHTML = `<tr><td colspan="3" style="text-align: center;">Abhi tak koi feedback nahi aaya.</td></tr>`;
-                    document.getElementById('average-rating').innerText = "0 ⭐";
-                } else {
-                    for(let i = feedbacks.length - 1; i >= 0; i--) {
-                        let fRow = feedbacks[i];
-                        totalRating += Number(fRow.rating); // Sabki rating jodhna
-                        
-                        // Stars banayein (Jaise 5 select kiya toh 5 stars)
-                        let stars = "⭐".repeat(fRow.rating);
-
-                        feedbackHTML += `
-                        <tr>
-                            <td><strong>${fRow.name}</strong></td>
-                            <td>${stars}</td>
-                            <td>${fRow.experience}</td>
-                        </tr>`;
-                    }
-                    
-                    // Average nikalna aur Dashboard par lagana
-                    let avgRating = (totalRating / feedbackCount).toFixed(1);
-                    document.getElementById('average-rating').innerText = `${avgRating} ⭐`;
-                    document.getElementById('feedback-table-body').innerHTML = feedbackHTML;
-                }
-                
-            } catch(error) {
-                console.error("Data laane me error:", error);
-            }
-        }
-
-        // Jaise hi website khule, data automatically aa jaye
-        window.onload = fetchDashboardData;
-
-        // TABLE KO FILTER KARNE KA MAGIC FUNCTION
-        function filterTable(statusToShow) {
-            let tableRows = document.querySelectorAll('#table-body tr');
+    // --- 2. DATA LAANE AUR BUTTONS BANANE KA KAAM ---
+    async function fetchDashboardData() {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             
-            tableRows.forEach(row => {
-                // Agar row me "Loading" ya "No bookings" likha hai, toh usko ignore karein
-                if (row.cells.length < 5) return; 
+            let bookings = data.bookings;
+            let feedbacks = data.feedbacks;
+            
+            let total = bookings.length;
+            let pending = 0;
+            let completed = 0;
+            let tableHTML = "";
+            
+            for(let i = bookings.length - 1; i >= 0; i--) {
+                let row = bookings[i];
+                
+                if(row.status === "Pending") pending++;
+                else if(row.status === "Completed") completed++;
+                
+                let dateObj = new Date(row.timestamp);
+                let formattedDate = dateObj.toLocaleDateString('en-IN');
+                
+                let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
-                let statusBadge = row.querySelector('.status');
-                if (statusBadge) {
-                    let currentStatus = statusBadge.innerText.trim();
-                    if (statusToShow === 'All' || currentStatus === statusToShow) {
-                        row.style.display = ''; // Row ko dikhao
-                    } else {
-                        row.style.display = 'none'; // Row ko chhupao
-                    }
-                }
-            });
+                // ACTION BUTTONS YAHAN HAIN!
+                let actionButtons = row.status === "Pending" ? `
+                    <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Completed')" title="Mark Complete"><img src="image/check-mark.png" alt="Complete" style="width:20px;"></button>
+                    <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Cancelled')" title="Cancel Booking"><img src="image/cancel.png" alt="Cancel" style="width:20px;"></button>
+                ` : `<span style="color: gray; font-size: 13px; font-weight: bold;">${row.status}</span>`;
+
+                tableHTML += `
+                <tr>
+                    <td><strong>${row.name}</strong><br><small style="color: gray;">${row.phone}</small></td>
+                    <td>${row.service}</td>
+                    <td>${formattedDate}</td>
+                    <td><span class="status ${statusClass}">${row.status}</span></td>
+                    <td>${actionButtons}</td>
+                </tr>`;
+            }
+            
+            document.getElementById('total-count').innerText = total;
+            document.getElementById('pending-count').innerText = pending;
+            document.getElementById('completed-count').innerText = completed;
+            
+            document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
+
+            // FEEDBACK AUR RATING CALCULATION
+            if (feedbacks.length === 0) {
+                document.getElementById('average-rating').innerText = "0 ⭐";
+            } else {
+                let totalRate = 0;
+                feedbacks.forEach(f => totalRate += Number(f.rating));
+                let avg = (totalRate / feedbacks.length).toFixed(1);
+                document.getElementById('average-rating').innerText = `${avg} ⭐`;
+            }
+            
+        } catch(error) {
+            console.error("Data laane me error:", error);
         }
-    </script>
+    }
+
+    // --- 3. TICK (✔️) AUR CROSS (❌) KA LOGIC ---
+    async function updateStatus(rowIndex, newStatus) {
+        let confirmAction = confirm(`Kya aap sach me is booking ko '${newStatus}' karna chahte hain?`);
+        if(!confirmAction) return;
+
+        let formData = new FormData();
+        formData.append("action", "update");
+        formData.append("rowIndex", rowIndex);
+        formData.append("status", newStatus);
+
+        try {
+            const response = await fetch(apiUrl, { method: 'POST', body: formData });
+            const result = await response.json();
+            
+            if(result.result === "success") {
+                fetchDashboardData(); // Table refresh karega
+            } else {
+                alert("Sheet update karne mein error aayi.");
+            }
+        } catch(error) {
+            alert("Internet connection check karein.");
+        }
+    }
+
+    // Window khulte hi data load ho jaye
+    window.onload = fetchDashboardData;
+</script>
 </body>
 </html>
