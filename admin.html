@@ -59,44 +59,36 @@
 
         <!-- Dashboard Cards (Report Cards) -->
         <section class="cards-section">
-            <div class="card card-blue">
+            <div class="card card-blue" onclick="filterTable('All')" style="cursor: pointer;" title="Show All Bookings">
                 <div class="card-info">
                     <h3>Total Bookings</h3>
                     <h2 id="total-count">...</h2>
                 </div>
-                <div class="card-icon">
-                     <img src="image/booking-list.png" alt="icon">
-                </div>
+                <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
             </div>
 
-            <div class="card card-yellow">
+            <div class="card card-yellow" onclick="filterTable('Pending')" style="cursor: pointer;" title="Show Pending Only">
                 <div class="card-info">
                     <h3>Pending Work</h3>
                     <h2 id="pending-count">...</h2>
                 </div>
-                <div class="card-icon">
-                     <img src="image/booking-list.png" alt="icon">
-                </div>
+                <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
             </div>
 
-            <div class="card card-green">
+            <div class="card card-green" onclick="filterTable('Completed')" style="cursor: pointer;" title="Show Completed Only">
                 <div class="card-info">
                     <h3>Completed Jobs</h3>
                     <h2 id="completed-count">...</h2>
                 </div>
-                <div class="card-icon">
-                     <img src="image/check-mark.png" alt="icon">
-                </div>
+                <div class="card-icon"><img src="image/check-mark.png" alt="icon"></div>
             </div>
 
-            <div class="card card-red">
+            <div class="card card-red" style="cursor: default;">
                 <div class="card-info">
                     <h3>Average Rating</h3>
-                    <h2>4.8 ⭐</h2> <!-- Ise hum baad me aage setup karenge -->
+                    <h2 id="average-rating">4.8 ⭐</h2>
                 </div>
-                <div class="card-icon">
-                     <img src="image/star-feedback.png" alt="icon">
-                </div>
+                <div class="card-icon"><img src="image/star-feedback.png" alt="icon"></div>
             </div>
         </section>
 
@@ -224,6 +216,26 @@
 
         // Jaise hi website khule, data automatically aa jaye
         window.onload = fetchDashboardData;
+
+        // TABLE KO FILTER KARNE KA MAGIC FUNCTION
+        function filterTable(statusToShow) {
+            let tableRows = document.querySelectorAll('#table-body tr');
+            
+            tableRows.forEach(row => {
+                // Agar row me "Loading" ya "No bookings" likha hai, toh usko ignore karein
+                if (row.cells.length < 5) return; 
+
+                let statusBadge = row.querySelector('.status');
+                if (statusBadge) {
+                    let currentStatus = statusBadge.innerText.trim();
+                    if (statusToShow === 'All' || currentStatus === statusToShow) {
+                        row.style.display = ''; // Row ko dikhao
+                    } else {
+                        row.style.display = 'none'; // Row ko chhupao
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
