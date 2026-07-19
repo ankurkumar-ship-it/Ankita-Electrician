@@ -303,3 +303,12 @@ td {
     margin-right: 12px;
     vertical-align: middle;
 }
+
+/* Sidebar Icons Size Fix - Normal Size */
+.sidebar li img, .sidebar-menu li img, .nav-links li img, .sidebar img {
+    width: 35px !important;  /* Ise 40px bhi kar sakte hain agar aur bada chahiye */
+    height: 35px !important; 
+    object-fit: contain !important;
+    margin-right: 15px !important; /* Text aur Icon ke beech thodi jagah */
+    vertical-align: middle;
+}
