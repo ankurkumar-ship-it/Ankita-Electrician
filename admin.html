@@ -42,75 +42,116 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <!-- Top Navigation -->
-        <header class="top-nav">
-             <div class="welcome-text">
-                  <h1>Welcome Back, Ankur! 👋</h1>
-                  <p>Here is the status of your business today.</p>
-             </div>
-        </header>
+        
+        <!-- ========================================== -->
+        <!-- 1. DASHBOARD VIEW (Pack kiya hua hissa)    -->
+        <!-- ========================================== -->
+        <div id="dashboard-view" class="view-section">
+            
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                 <div class="welcome-text">
+                     <h1>Welcome Back, Ankur! 👋</h1>
+                     <p>Here is the status of your business today.</p>
+                 </div>
+            </header>
 
-        <!-- Dashboard Cards (Report Cards) -->
-        <section class="cards-section">
-            <div class="card card-blue" onclick="filterTable('All')" style="cursor: pointer;" title="Show All Bookings">
-                <div class="card-info">
-                    <h3>Total Bookings</h3>
-                    <h2 id="total-count">...</h2>
+            <!-- Dashboard Cards (Report Cards) -->
+            <section class="cards-section">
+                <div class="card card-blue" onclick="filterTable('All')" style="cursor: pointer;" title="Show All Bookings">
+                    <div class="card-info">
+                        <h3>Total Bookings</h3>
+                        <h2 id="total-count">...</h2>
+                    </div>
+                    <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
                 </div>
-                <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
-            </div>
 
-            <div class="card card-yellow" onclick="filterTable('Pending')" style="cursor: pointer;" title="Show Pending Only">
-                <div class="card-info">
-                    <h3>Pending Work</h3>
-                    <h2 id="pending-count">...</h2>
+                <div class="card card-yellow" onclick="filterTable('Pending')" style="cursor: pointer;" title="Show Pending Only">
+                    <div class="card-info">
+                        <h3>Pending Work</h3>
+                        <h2 id="pending-count">...</h2>
+                    </div>
+                    <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
                 </div>
-                <div class="card-icon"><img src="image/booking-list.png" alt="icon"></div>
-            </div>
 
-            <div class="card card-green" onclick="filterTable('Completed')" style="cursor: pointer;" title="Show Completed Only">
-                <div class="card-info">
-                    <h3>Completed Jobs</h3>
-                    <h2 id="completed-count">...</h2>
+                <div class="card card-green" onclick="filterTable('Completed')" style="cursor: pointer;" title="Show Completed Only">
+                    <div class="card-info">
+                        <h3>Completed Jobs</h3>
+                        <h2 id="completed-count">...</h2>
+                    </div>
+                    <div class="card-icon"><img src="image/check-mark.png" alt="icon"></div>
                 </div>
-                <div class="card-icon"><img src="image/check-mark.png" alt="icon"></div>
-            </div>
 
-            <div class="card card-red" style="cursor: default;">
-                <div class="card-info">
-                    <h3>Average Rating</h3>
-                    <h2 id="average-rating">0 ⭐</h2>
+                <div class="card card-red" style="cursor: default;">
+                    <div class="card-info">
+                        <h3>Average Rating</h3>
+                        <h2 id="average-rating">0 ⭐</h2>
+                    </div>
+                    <div class="card-icon"><img src="image/star-feedback.png" alt="icon"></div>
                 </div>
-                <div class="card-icon"><img src="image/star-feedback.png" alt="icon"></div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Recent Bookings Table -->
-        <section class="table-section">
-            <div class="table-header">
-                <h2>Recent Bookings</h2>
-            </div>
-            <div class="table-responsive">
-                <table>
+            <!-- Recent Bookings Table -->
+            <section class="table-section">
+                <div class="table-header">
+                    <h2>Recent Bookings</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Service</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr>
+                                <td colspan="5" style="text-align: center;">Loading data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div> <!-- YAHAN DASHBOARD VIEW KHATAM HUA -->
+
+
+        <!-- ========================================== -->
+        <!-- 2. CUSTOMERS VIEW SECTION                  -->
+        <!-- ========================================== -->
+        <div id="customers-view" class="view-section" style="display: none;">
+            <div class="table-container">
+                <h2 style="color: white; margin-bottom: 15px;">Customer History & Details</h2>
+                <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Customer Name</th>
-                            <th>Service</th>
-                            <th>Date</th>
-                            <th>Status</th>
+                            <th>Customer Name & Date</th>
+                            <th>Service Details</th>
+                            <th>Address</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="table-body">
-                        <tr>
-                            <td colspan="5" style="text-align: center;">Loading data...</td>
-                        </tr>
+                    <tbody id="customer-table-body">
+                        <!-- Customer data aayega -->
                     </tbody>
                 </table>
             </div>
-        </section>
-    </main>
+        </div> <!-- YAHAN CUSTOMERS VIEW KHATAM HUA -->
 
+
+        <!-- ========================================== -->
+        <!-- 3. FEEDBACK VIEW SECTION (Future ke liye)  -->
+        <!-- ========================================== -->
+        <div id="feedback-view" class="view-section" style="display: none;">
+            <div class="table-container">
+                <h2 style="color: white; margin-bottom: 15px;">Customer Feedbacks</h2>
+                <p style="color: gray;">Feedback system abhi set ho raha hai...</p>
+            </div>
+        </div> <!-- YAHAN FEEDBACK VIEW KHATAM HUA -->
+
+    </main>
     <!-- CUSTOMERS VIEW SECTION -->
         <div id="customers-view" class="view-section" style="display: none;">
             <div class="table-container">
