@@ -203,7 +203,7 @@
         if(clickedElement) clickedElement.classList.add('active');
     }
 
-    // --- 2. DATA LAANE AUR BUTTONS BANANE KA KAAM (DASHBOARD & CUSTOMERS) ---
+    // --- 2. DATA LAANE AUR BUTTONS BANANE KA KAAM (DASHBOARD, CUSTOMERS & FEEDBACK) ---
     async function fetchDashboardData() {
         try {
             const response = await fetch(apiUrl);
@@ -217,8 +217,10 @@
             let completed = 0;
             
             let tableHTML = "";
-            let customerHTML = ""; // Customer page ke liye
+            let customerHTML = ""; 
+            let feedbackHTML = ""; // Feedback page ke liye
             
+            // 1. Bookings aur Customers ka data set karna
             for(let i = bookings.length - 1; i >= 0; i--) {
                 let row = bookings[i];
                 
@@ -230,13 +232,11 @@
                 
                 let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
-                // Dashboard ke Action Buttons
                 let actionButtons = row.status === "Pending" ? `
                     <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Completed')" title="Mark Complete"><img src="image/check-mark.png" alt="Complete" style="width:20px;"></button>
                     <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Cancelled')" title="Cancel Booking"><img src="image/cancel.png" alt="Cancel" style="width:20px;"></button>
                 ` : `<span style="color: gray; font-size: 13px; font-weight: bold;">${row.status}</span>`;
 
-                // Dashboard Table Code
                 tableHTML += `
                 <tr>
                     <td><strong>${row.name}</strong><br><small style="color: gray;">${row.phone}</small></td>
@@ -246,7 +246,6 @@
                     <td>${actionButtons}</td>
                 </tr>`;
 
-                // Customer Table Ka Data aur Call Button
                 customerHTML += `
                 <tr>
                     <td><strong>${row.name}</strong><br><small style="color: gray;">${formattedDate}</small></td>
@@ -260,34 +259,53 @@
                 </tr>`;
             }
             
+            // 2. Feedback ka data set karna (NAYA CODE)
+            let totalRate = 0;
+            for(let j = feedbacks.length - 1; j >= 0; j--) {
+                let fb = feedbacks[j];
+                let fbDateObj = new Date(fb.timestamp);
+                let fbDate = fbDateObj.toLocaleDateString('en-IN');
+                
+                let starCount = Number(fb.rating) || 5; 
+                totalRate += starCount;
+                
+                // Rating number ko Stars (⭐) me badalna
+                let starsHTML = "⭐".repeat(starCount); 
+
+                feedbackHTML += `
+                <tr>
+                    <td><strong>${fb.name}</strong><br><small style="color: gray;">${fbDate}</small></td>
+                    <td style="color: gold; font-size: 18px;">${starsHTML}</td>
+                    <td>${fb.exp}</td>
+                </tr>`;
+            }
+
             // Dashboard par numbers set karna
             document.getElementById('total-count').innerText = total;
             document.getElementById('pending-count').innerText = pending;
             document.getElementById('completed-count').innerText = completed;
             
-            // Tables me data daalna
-            document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
-            
-            let custBody = document.getElementById('customer-table-body');
-            if(custBody) {
-                custBody.innerHTML = total === 0 ? `<tr><td colspan="4" style="text-align: center;">No customers found.</td></tr>` : customerHTML;
-            }
-
-            // FEEDBACK AUR RATING CALCULATION
+            // Average Rating Calculate karke Dashboard pe dikhana
             if (feedbacks.length === 0) {
                 document.getElementById('average-rating').innerText = "0 ⭐";
             } else {
-                let totalRate = 0;
-                feedbacks.forEach(f => totalRate += Number(f.rating));
                 let avg = (totalRate / feedbacks.length).toFixed(1);
                 document.getElementById('average-rating').innerText = `${avg} ⭐`;
             }
             
+            // HTML Tables me data print karna
+            document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
+            
+            let custBody = document.getElementById('customer-table-body');
+            if(custBody) custBody.innerHTML = total === 0 ? `<tr><td colspan="4" style="text-align: center;">No customers found.</td></tr>` : customerHTML;
+
+            let fbBody = document.getElementById('feedback-table-body');
+            if(fbBody) fbBody.innerHTML = feedbacks.length === 0 ? `<tr><td colspan="3" style="text-align: center;">No feedbacks yet.</td></tr>` : feedbackHTML;
+
         } catch(error) {
             console.error("Data laane me error:", error);
         }
     }
-
     // --- 3. TICK (✔️) AUR CROSS (❌) KA LOGIC ---
     async function updateStatus(rowIndex, newStatus) {
         let confirmAction = confirm(`Kya aap sach me is booking ko '${newStatus}' karna chahte hain?`);
