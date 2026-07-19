@@ -216,6 +216,9 @@
 
     <!-- JavaScript -->
     <script>
+        // ==========================================
+        // 1. LANGUAGE & TRANSLATION LOGIC
+        // ==========================================
         const translations = {
             "en": {
                 "call-btn": "Call Now",
@@ -284,17 +287,96 @@
             }
         };
 
-        // 1. Feedback Form Open karne ka function
+        function changeLanguage(lang) {
+            for (let id in translations[lang]) {
+                let element = document.getElementById(id);
+                if (element) {
+                    element.innerText = translations[lang][id];
+                }
+            }
+            for (let id in placeholders[lang]) {
+                let element = document.getElementById(id);
+                if (element) {
+                    element.placeholder = placeholders[lang][id];
+                }
+            }
+            let premiumSelect = document.querySelector('.premium-lang-select');
+            if (premiumSelect) premiumSelect.value = lang;
+        }
+
+        function closeLanguageModal(lang) {
+            document.getElementById('language-modal').style.display = 'none';
+            changeLanguage(lang); 
+        }
+
+        // ==========================================
+        // 2. UI & BUTTONS LOGIC
+        // ==========================================
+        function selectServiceAndScroll(serviceName) {
+            let serviceDropdown = document.getElementById('custService');
+            if(serviceDropdown) serviceDropdown.value = serviceName; 
+            window.location.href = '#booking-area'; 
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').style.display = 'none';
+        }
+
         function openFeedbackForm() {
             document.getElementById('feedback-entry-modal').style.display = 'flex';
         }
 
-        // 2. Feedback Form Close karne ka function
         function closeFeedbackForm() {
             document.getElementById('feedback-entry-modal').style.display = 'none';
         }
 
-        // 3. Feedback Data Submit karne ka logic
+        // ==========================================
+        // 3. GOOGLE SHEETS API LOGIC (Booking & Feedback)
+        // ==========================================
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec';
+
+        // A. BOOKING FORM SUBMIT
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            let audio = document.getElementById('successSound');
+            if(audio) {
+                audio.currentTime = 0; 
+                let playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) { console.log("Browser block:", error); });
+                }
+            }
+
+            const submitBtn = document.getElementById('submit-button');
+            const btnTextSpan = document.getElementById('btn-book');
+            const originalBtnText = btnTextSpan.innerHTML;
+            btnTextSpan.innerHTML = "Booking in progress...";
+            submitBtn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(this)})
+              .then(response => {
+                  document.getElementById('success-modal').style.display = 'flex';
+                  this.reset();
+                  document.getElementById('custDate').type = 'text';
+                  document.getElementById('custTime').type = 'text';
+                  
+                  btnTextSpan.innerHTML = originalBtnText;
+                  submitBtn.disabled = false;
+
+                  setTimeout(function() {
+                      document.getElementById('success-modal').style.display = 'none';
+                  }, 3000); 
+              })
+              .catch(error => {
+                  console.error('Error!', error.message);
+                  alert("Kuch technical error aayi hai. Kripya hume WhatsApp par call karein.");
+                  btnTextSpan.innerHTML = originalBtnText;
+                  submitBtn.disabled = false;
+              });
+        });
+
+        // B. FEEDBACK FORM SUBMIT
         document.getElementById('feedbackForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
             
@@ -314,7 +396,7 @@
                   if(data.result === "success") {
                       closeFeedbackForm(); 
                       document.getElementById('feedback-success-modal').style.display = 'flex';
-                      document.getElementById('feedbackForm').reset(); 
+                      this.reset(); 
                       
                       btnTextSpan.innerHTML = originalText;
                       submitBtn.disabled = false;
@@ -334,7 +416,6 @@
                   submitBtn.disabled = false;
               });
         });
-        }
     </script>
 </body>
 </html>
