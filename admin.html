@@ -146,12 +146,12 @@
         if(targetView) targetView.style.display = 'block';
         
         // Menu me se purana active (highlight) hatao aur naye par lagao
-        let menuItems = document.querySelectorAll('li');
+        let menuItems = document.querySelectorAll('.nav-links li, .sidebar-menu li, li'); 
         menuItems.forEach(item => item.classList.remove('active'));
         if(clickedElement) clickedElement.classList.add('active');
     }
 
-    // --- 2. DATA LAANE AUR BUTTONS BANANE KA KAAM ---
+    // --- 2. DATA LAANE AUR BUTTONS BANANE KA KAAM (DASHBOARD & CUSTOMERS) ---
     async function fetchDashboardData() {
         try {
             const response = await fetch(apiUrl);
@@ -163,7 +163,9 @@
             let total = bookings.length;
             let pending = 0;
             let completed = 0;
+            
             let tableHTML = "";
+            let customerHTML = ""; // Customer page ke liye
             
             for(let i = bookings.length - 1; i >= 0; i--) {
                 let row = bookings[i];
@@ -176,12 +178,13 @@
                 
                 let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
-                // ACTION BUTTONS YAHAN HAIN!
+                // Dashboard ke Action Buttons
                 let actionButtons = row.status === "Pending" ? `
                     <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Completed')" title="Mark Complete"><img src="image/check-mark.png" alt="Complete" style="width:20px;"></button>
                     <button class="action-btn" onclick="updateStatus(${row.rowIndex}, 'Cancelled')" title="Cancel Booking"><img src="image/cancel.png" alt="Cancel" style="width:20px;"></button>
                 ` : `<span style="color: gray; font-size: 13px; font-weight: bold;">${row.status}</span>`;
 
+                // Dashboard Table Code
                 tableHTML += `
                 <tr>
                     <td><strong>${row.name}</strong><br><small style="color: gray;">${row.phone}</small></td>
@@ -190,13 +193,33 @@
                     <td><span class="status ${statusClass}">${row.status}</span></td>
                     <td>${actionButtons}</td>
                 </tr>`;
+
+                // Customer Table Ka Data aur Call Button
+                customerHTML += `
+                <tr>
+                    <td><strong>${row.name}</strong><br><small style="color: gray;">${formattedDate}</small></td>
+                    <td>${row.service} <br> <span class="status ${statusClass}" style="font-size:10px; padding: 2px 6px;">${row.status}</span></td>
+                    <td>${row.address}</td>
+                    <td>
+                        <a href="tel:${row.phone}" style="background: #25D366; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                            📞 Call
+                        </a>
+                    </td>
+                </tr>`;
             }
             
+            // Dashboard par numbers set karna
             document.getElementById('total-count').innerText = total;
             document.getElementById('pending-count').innerText = pending;
             document.getElementById('completed-count').innerText = completed;
             
+            // Tables me data daalna
             document.getElementById('table-body').innerHTML = total === 0 ? `<tr><td colspan="5" style="text-align: center;">No bookings yet!</td></tr>` : tableHTML;
+            
+            let custBody = document.getElementById('customer-table-body');
+            if(custBody) {
+                custBody.innerHTML = total === 0 ? `<tr><td colspan="4" style="text-align: center;">No customers found.</td></tr>` : customerHTML;
+            }
 
             // FEEDBACK AUR RATING CALCULATION
             if (feedbacks.length === 0) {
