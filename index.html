@@ -284,139 +284,56 @@
             }
         };
 
-        function changeLanguage(lang) {
-            for (let id in translations[lang]) {
-                let element = document.getElementById(id);
-                if (element) {
-                    element.innerText = translations[lang][id];
-                }
-            }
-            for (let id in placeholders[lang]) {
-                let element = document.getElementById(id);
-                if (element) {
-                    element.placeholder = placeholders[lang][id];
-                }
-            }
-            let premiumSelect = document.querySelector('.premium-lang-select');
-            if (premiumSelect) {
-                premiumSelect.value = lang;
-            }
+        // 1. Feedback Form Open karne ka function
+        function openFeedbackForm() {
+            document.getElementById('feedback-entry-modal').style.display = 'flex';
         }
 
-        function closeLanguageModal(lang) {
-            document.getElementById('language-modal').style.display = 'none';
-            changeLanguage(lang); 
+        // 2. Feedback Form Close karne ka function
+        function closeFeedbackForm() {
+            document.getElementById('feedback-entry-modal').style.display = 'none';
         }
 
-        function selectServiceAndScroll(serviceName) {
-            let serviceDropdown = document.getElementById('custService');
-            if(serviceDropdown) {
-                serviceDropdown.value = serviceName; 
-            }
-            window.location.href = '#booking-area'; 
-        }
-
-        function closeSuccessModal() {
-            document.getElementById('success-modal').style.display = 'none';
-        }
-
-        // --- NAYA API WALA JAVASCRIPT LOGIC YAHAN HAI ---
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzKyZDZw979VGRiKJ9lqpMu0os-Is1efZmXjEOtrRyMcKvcKENHXk2Mv71bFQCuJE99kw/exec';
-        
-        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+        // 3. Feedback Data Submit karne ka logic
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
             
-            // 1. Success Sound Play Karna
-            let audio = document.getElementById('successSound');
-            if(audio) {
-                audio.currentTime = 0; 
-                let playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(function(error) { console.log("Browser block:", error); });
-                }
-            }
-
-            // 2. Button ka text change karna taaki user ko lage "Process ho raha hai"
-            const submitBtn = document.getElementById('submit-button');
-            const btnTextSpan = document.getElementById('btn-book');
-            const originalBtnText = btnTextSpan.innerHTML;
-            btnTextSpan.innerHTML = "Booking in progress...";
+            const submitBtn = document.getElementById('submit-fb-btn');
+            const btnTextSpan = document.getElementById('btn-submit-fb');
+            const originalText = btnTextSpan.innerHTML;
+            
+            btnTextSpan.innerHTML = "Submitting...";
             submitBtn.disabled = true;
 
-            // 3. API ke zariye Google Sheet me data bhejna
-            fetch(scriptURL, { method: 'POST', body: new FormData(this)})
-              .then(response => {
-                  // 4. Data save hone ke baad Success Popup dikhana
-                  document.getElementById('success-modal').style.display = 'flex';
-                  
-                  // Form ko wapas khali (reset) karna
-                  this.reset();
-                  document.getElementById('custDate').type = 'text';
-                  document.getElementById('custTime').type = 'text';
-                  
-                  // Button ko wapas normal karna
-                  btnTextSpan.innerHTML = originalBtnText;
-                  submitBtn.disabled = false;
+            let formData = new FormData(this);
+            formData.append("action", "feedback"); 
 
-                  // 3 second baad popup apne aap band ho jayega
-                  setTimeout(function() {
-                      document.getElementById('success-modal').style.display = 'none';
-                  }, 3000); 
+            fetch(scriptURL, { method: 'POST', body: formData })
+              .then(response => response.json()) 
+              .then(data => {
+                  if(data.result === "success") {
+                      closeFeedbackForm(); 
+                      document.getElementById('feedback-success-modal').style.display = 'flex';
+                      document.getElementById('feedbackForm').reset(); 
+                      
+                      btnTextSpan.innerHTML = originalText;
+                      submitBtn.disabled = false;
+
+                      setTimeout(function() {
+                          document.getElementById('feedback-success-modal').style.display = 'none';
+                      }, 3000); 
+                  } else {
+                      alert("Google Sheet me Error aayi hai: " + data.error);
+                      btnTextSpan.innerHTML = originalText;
+                      submitBtn.disabled = false;
+                  }
               })
               .catch(error => {
-                  console.error('Error!', error.message);
-                  alert("Kuch technical error aayi hai. Kripya hume WhatsApp par call karein.");
-                  btnTextSpan.innerHTML = originalBtnText;
+                  alert("Internet connection ya API me dikkat hai.");
+                  btnTextSpan.innerHTML = originalText;
                   submitBtn.disabled = false;
               });
         });
-
-        // Feedback Form Logic
-        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    
-    const submitBtn = document.getElementById('submit-fb-btn');
-    const btnTextSpan = document.getElementById('btn-submit-fb');
-    const originalText = btnTextSpan.innerHTML;
-    
-    btnTextSpan.innerHTML = "Submitting...";
-    submitBtn.disabled = true;
-
-    // Data collect karke action = "feedback" set karna
-    let formData = new FormData(this);
-    formData.append("action", "feedback"); 
-
-    fetch(scriptURL, { method: 'POST', body: formData })
-      .then(response => {
-          closeFeedbackForm(); 
-          document.getElementById('feedback-success-modal').style.display = 'flex';
-          this.reset(); 
-          
-          btnTextSpan.innerHTML = originalText;
-          submitBtn.disabled = false;
-
-          setTimeout(function() {
-              document.getElementById('feedback-success-modal').style.display = 'none';
-          }, 3000); 
-      })
-      .catch(error => {
-          alert("Error saving feedback. Please try again.");
-          btnTextSpan.innerHTML = originalText;
-          submitBtn.disabled = false;
-      });
-});
-    </script>
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
         }
     </script>
 </body>
