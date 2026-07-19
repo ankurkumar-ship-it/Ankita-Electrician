@@ -312,3 +312,18 @@ td {
     margin-right: 15px !important; /* Text aur Icon ke beech thodi jagah */
     vertical-align: middle;
 }
+
+/* Sidebar Menu Spacing & Gap Fix */
+.sidebar li, .nav-links li, .sidebar-menu li {
+    margin-bottom: 15px !important; /* Ek dusre ke beech ki doori */
+    padding: 12px 15px !important;  /* Andar ki khuli jagah */
+    cursor: pointer !important;     /* Click karne wala haath dikhega */
+    border-radius: 8px;             /* Thoda sundar gol design */
+    display: flex;
+    align-items: center;
+}
+
+/* Icon aur Text ke beech ki doori */
+.sidebar li img, .nav-links li img, .sidebar-menu li img {
+    margin-right: 18px !important; 
+}
