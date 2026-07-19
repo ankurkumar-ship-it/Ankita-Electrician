@@ -66,12 +66,15 @@
         <div id="dashboard-view" class="view-section">
             
             <!-- Top Navigation -->
-            <header class="top-nav">
-                 <div class="welcome-text">
-                     <h1>Welcome Back, Ankur! 👋</h1>
-                     <p>Here is the status of your business today.</p>
-                 </div>
-            </header>
+        <header class="top-nav" style="display: flex; align-items: center; gap: 15px;">
+            <!-- Naya Logo Button (Click karne par menu khulega) -->
+            <img src="image/icon.png" alt="Menu" id="menu-btn" onclick="toggleSidebar()" style="width: 45px; height: 45px; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+            
+            <div class="welcome-text">
+                <h1 style="margin: 0;">Welcome Back, Ankur! 👋</h1>
+                <p style="margin: 5px 0 0 0;">Here is the status of your business today.</p>
+            </div>
+        </header>
 
             <!-- Dashboard Cards (Report Cards) -->
             <section class="cards-section">
@@ -236,6 +239,12 @@
         let menuItems = document.querySelectorAll('.nav-links li, .sidebar-menu li, li'); 
         menuItems.forEach(item => item.classList.remove('active'));
         if(clickedElement) clickedElement.classList.add('active');
+
+        // Menu par click karne ke baad sidebar ko automatically band kar do
+        let sidebar = document.querySelector('.sidebar');
+        if(sidebar && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
     }
 
     // Global variable: Yaad rakhne ke liye ki pehle kitni bookings thi
@@ -388,6 +397,12 @@
         fetchDashboardData(); 
         setInterval(fetchDashboardData, 20000); // 20000 milliseconds = 20 seconds
     };
+
+        // --- 4. SIDEBAR KHOLNE / BAND KARNE KA FUNCTION ---
+    function toggleSidebar() {
+        let sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('active');
+    }
 </script>
 </body>
 </html>
