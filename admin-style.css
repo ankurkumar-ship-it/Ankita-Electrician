@@ -294,3 +294,12 @@ td {
         grid-template-columns: 1fr;
     }
 }
+
+/* Sidebar Icons Size Fix */
+.sidebar li img, .sidebar-menu li img, .nav-links li img, .sidebar img {
+    width: 24px !important;
+    height: 24px !important;
+    object-fit: contain !important;
+    margin-right: 12px;
+    vertical-align: middle;
+}
