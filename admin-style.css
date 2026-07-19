@@ -327,3 +327,36 @@ td {
 .sidebar li img, .nav-links li img, .sidebar-menu li img {
     margin-right: 18px !important; 
 }
+
+/* ========================================== */
+/* SIDEBAR TOGGLE (HIDE/SHOW) MAGIC           */
+/* ========================================== */
+
+/* Menu ko by default screen ke bahar (left me) chhupa do */
+.sidebar {
+    position: fixed;
+    left: -260px; 
+    transition: left 0.4s ease; /* Smooth sliding effect */
+    z-index: 1000;
+    height: 100vh;
+}
+
+/* Jab click hoga toh .active class judegi aur menu wapas aayega */
+.sidebar.active {
+    left: 0; 
+}
+
+/* Main content ko full width do, kyunki menu band hai */
+.main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    transition: margin-left 0.4s ease, width 0.4s ease;
+}
+
+/* Jab menu khulega, toh Dashboard aage khisak jayega (Sirf laptop/bade screen par) */
+@media (min-width: 768px) {
+    .sidebar.active ~ .main-content {
+        margin-left: 260px !important;
+        width: calc(100% - 260px) !important;
+    }
+}
