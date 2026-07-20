@@ -392,47 +392,52 @@
               });
         });
 
-        // B. FEEDBACK FORM SUBMIT
-        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            
-            const submitBtn = document.getElementById('submit-fb-btn');
-            const btnTextSpan = document.getElementById('btn-submit-fb');
-            const originalText = btnTextSpan.innerHTML;
-            
-            btnTextSpan.innerHTML = "Submitting...";
-            submitBtn.disabled = true;
+       // B. FEEDBACK FORM SUBMIT (Suraksha Kavach ke saath)
+const feedbackFormElement = document.getElementById('feedbackForm');
 
-            let formData = new FormData(this);
-            formData.append("action", "feedback"); 
+// Yeh 'if' check karega ki form page par hai ya nahi, tabhi aage badhega
+if (feedbackFormElement) {
+    feedbackFormElement.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        
+        const submitBtn = document.getElementById('submit-fb-btn');
+        const btnTextSpan = document.getElementById('btn-submit-fb');
+        const originalText = btnTextSpan.innerHTML;
+        
+        btnTextSpan.innerHTML = "Submitting...";
+        submitBtn.disabled = true;
 
-            fetch(scriptURL, { method: 'POST', body: formData })
-              .then(response => response.json()) 
-              .then(data => {
-                  if(data.result === "success") {
-                      closeFeedbackForm(); 
-                      document.getElementById('feedback-success-modal').style.display = 'flex';
-                      this.reset(); 
-                      
-                      btnTextSpan.innerHTML = originalText;
-                      submitBtn.disabled = false;
+        let formData = new FormData(this);
+        formData.append("action", "feedback"); 
 
-                      setTimeout(function() {
-                          document.getElementById('feedback-success-modal').style.display = 'none';
-                      }, 3000); 
-                  } else {
-                      alert("Google Sheet me Error aayi hai: " + data.error);
-                      btnTextSpan.innerHTML = originalText;
-                      submitBtn.disabled = false;
-                  }
-              })
-              .catch(error => {
-                  alert("Internet connection ya API me dikkat hai.");
+        // Aapka pehle se likha scriptURL variable yahan hona chahiye
+        fetch(scriptURL, { method: 'POST', body: formData })
+          .then(response => response.json()) 
+          .then(data => {
+              if(data.result === "success") {
+                  closeFeedbackForm(); 
+                  document.getElementById('feedback-success-modal').style.display = 'flex';
+                  this.reset(); 
+                  
                   btnTextSpan.innerHTML = originalText;
                   submitBtn.disabled = false;
-              });
-        });
+
+                  setTimeout(function() {
+                      document.getElementById('feedback-success-modal').style.display = 'none';
+                  }, 3000); 
+              } else {
+                  alert("Google Sheet me Error aayi hai: " + data.error);
+                  btnTextSpan.innerHTML = originalText;
+                  submitBtn.disabled = false;
+              }
+          })
+          .catch(error => {
+              alert("Internet connection ya API me dikkat hai.");
+              btnTextSpan.innerHTML = originalText;
+              submitBtn.disabled = false;
+          });
+    });
+}
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
