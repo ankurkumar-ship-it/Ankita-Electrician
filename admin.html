@@ -306,9 +306,25 @@
                     audio.currentTime = 0; // Sound shuru se bajane ke liye
                     audio.play().catch(e => console.log("Browser block:", e));
                 }
-                // Screen par popup dikhao
-                alert("🔔 Badhai ho! Ek nayi booking aayi hai! Dashboard refresh ho gaya hai.");
-            }
+                // --- PREMIUM NOTIFICATION CODE ---
+                if (Notification.permission === "granted") {
+                    new Notification("Ankita Electrician", {
+                        body: "🔔 Badhai ho! Ek nayi booking aayi hai!",
+                        icon: "image/icon.png",
+                        vibrate: [200, 100, 200]
+                    });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            new Notification("Ankita Electrician", {
+                                body: "🔔 Badhai ho! Ek nayi booking aayi hai!",
+                                icon: "image/icon.png"
+                            });
+                        }
+                    });
+                }
+                // ----------------------------------
+        
             
             // Current booking count ko save kar lo
             lastBookingCount = total; 
