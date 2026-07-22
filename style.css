@@ -581,30 +581,30 @@ body {
     box-shadow: 0 15px 25px rgba(245, 158, 11, 0.6);
 }
 
-/* Style for the maintenance offer section (new code) */
-.banner-section .maintenance-offer {
-  background-color: rgba(255, 204, 0, 0.1); /* Matching image_5.png accent color (yellow) but translucent */
-  border: 1px solid rgba(255, 204, 0, 0.5); /* Semi-transparent yellow border */
+/* --- Maintenance Guarantee Badge Design --- */
+.hero .maintenance-offer {
+  background-color: rgba(255, 204, 0, 0.1); 
+  border: 1px solid rgba(255, 204, 0, 0.5); 
   border-radius: 10px;
-  padding: 15px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px; /* Space between icon and text */
-  margin-top: 20px; /* Space from paragraph above */
-  width: fit-content; /* Fit the content inside */
-  margin-left: auto; /* Center horizontally in the banner section */
+  gap: 15px; 
+  margin-top: 25px; 
+  width: fit-content; 
+  margin-left: auto; 
   margin-right: auto;
 }
 
-.banner-section .offer-icon {
-  width: 60px; /* Adjust size based on design */
-  height: 60px;
+.hero .offer-icon {
+  width: 50px; 
+  height: 50px;
 }
 
-.banner-section .offer-text {
-  color: #ffcc00; /* Matching image_5.png accent color (yellow) */
-  font-size: 1.5rem; /* Larger font size */
+.hero .offer-text {
+  color: #ffcc00; 
+  font-size: 1.3rem; 
   font-weight: bold;
-  margin: 0; /* Remove default paragraph margin */
+  margin: 0; 
 }
