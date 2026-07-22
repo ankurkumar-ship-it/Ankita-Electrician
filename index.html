@@ -187,10 +187,7 @@
         <!-- 👇 NAYA: Average Rating dikhane wala box 👇 -->
         <div id="average-rating-container" class="average-rating-box"></div>
         <!-- 👆 NAYA KHATAM 👆 -->
-
-        <div class="reviews-container" id="reviews-list">
-            <!-- Cards yahan aayenge -->
-        </div>
+        
     </section>
 
     <!-- Premium Feedback Button -->
@@ -463,31 +460,29 @@ if (feedbackFormElement) {
 }
         
 // ==========================================
-// 🌟 CUSTOMER REVIEWS & AVERAGE FETCH KARNE KA CODE 🌟
+// 🌟 SIRF AVERAGE RATING DIKHANE KA CODE 🌟
 // ==========================================
 async function loadReviews() {
-    const reviewsContainer = document.getElementById("reviews-list");
-    const avgContainer = document.getElementById("average-rating-container"); // Naya container
+    const avgContainer = document.getElementById("average-rating-container");
 
     try {
         const response = await fetch(scriptURL);
         const data = await response.json();
         
-        reviewsContainer.innerHTML = ""; 
-        
         if (data.feedbacks && data.feedbacks.length > 0) {
             
-            // 👇 AVERAGE CALCULATE KARNE KA LOGIC 👇
             let totalRating = 0;
             let totalReviews = data.feedbacks.length;
             
+            // Sabki rating jodna
             data.feedbacks.forEach(feedback => {
                 totalRating += parseInt(feedback.rating) || 5; 
             });
             
-            // Average nikala aur decimal ke 1 digit tak set kiya (jaise 4.8)
+            // Average nikalna
             let averageRating = (totalRating / totalReviews).toFixed(1); 
             
+            // Sirf Center wala Average Box dikhana
             if (avgContainer) {
                 avgContainer.innerHTML = `
                     <div class="avg-number-box">
@@ -497,32 +492,15 @@ async function loadReviews() {
                     <div class="avg-text">Based on ${totalReviews} customer reviews</div>
                 `;
             }
-            // 👆 AVERAGE KA LOGIC KHATAM 👆
-
-            // Har ek feedback ko card mein badalna
-            data.feedbacks.forEach(feedback => {
-                let ratingNumber = parseInt(feedback.rating) || 5; 
-                
-                const cardHTML = `
-                    <div class="review-card">
-                        <h4 class="review-name">${feedback.name}</h4>
-                        <div class="premium-rating-box">
-                            <span class="rating-number">${ratingNumber}.0</span> 
-                            <span class="rating-star">⭐</span>
-                        </div>
-                        <p class="review-text">"${feedback.experience}"</p>
-                    </div>
-                `;
-                reviewsContainer.innerHTML += cardHTML;
-            });
             
         } else {
-            reviewsContainer.innerHTML = "<p style='color: #cbd5e1;'>Abhi tak koi review nahi aaya hai. Pehla review aap dijiye!</p>";
+            if (avgContainer) {
+                avgContainer.innerHTML = "<p style='color: #cbd5e1; margin-top: 15px;'>Abhi tak koi review nahi aaya hai. Pehla review aap dijiye!</p>";
+            }
         }
         
     } catch (error) {
-        console.error("Reviews load hone mein error:", error);
-        reviewsContainer.innerHTML = "<p style='color: #ffcc00;'>Reviews load nahi ho paye.</p>";
+        console.error("Error:", error);
     }
 }
 
