@@ -484,10 +484,6 @@ async function loadReviews() {
             // Har ek feedback/review ko card mein badalna
             data.feedbacks.forEach(feedback => {
                 
-                // Rating ko stars (⭐) mein convert karna
-                let ratingNumber = parseInt(feedback.rating) || 5; 
-                let starIcons = "⭐".repeat(ratingNumber); 
-                
                 // Rating ko number mein nikalna (jaise 5)
                 let ratingNumber = parseInt(feedback.rating) || 5; 
                 
