@@ -617,7 +617,7 @@ body {
 
 .reviews-container {
     display: flex;
-    justify-content: center; /* 👇 YEH NAYI LINE ISE BEECH MEIN LAYEGI */
+    justify-content: flex-start; /* 👈 Center ki jagah ise Flex-start karein */
     gap: 20px;
     overflow-x: auto; 
     padding: 20px;
@@ -657,4 +657,23 @@ body {
     font-size: 0.95rem;
     line-height: 1.5;
     margin: 0;
+}
+
+/* --- Premium Rating Box Design --- */
+.premium-rating-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.rating-number {
+    color: #ffffff; /* Safed rang ka bold number */
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.rating-star {
+    font-size: 1.5rem; /* Bada Star */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); /* Star par halki si shadow */
 }
