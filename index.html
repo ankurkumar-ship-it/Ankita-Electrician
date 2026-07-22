@@ -488,11 +488,20 @@ async function loadReviews() {
                 let ratingNumber = parseInt(feedback.rating) || 5; 
                 let starIcons = "⭐".repeat(ratingNumber); 
                 
-                // Card ka HTML structure
+                // Rating ko number mein nikalna (jaise 5)
+                let ratingNumber = parseInt(feedback.rating) || 5; 
+                
+                // Card ka naya HTML structure (image 2 jaisa design)
                 const cardHTML = `
                     <div class="review-card">
                         <h4 class="review-name">${feedback.name}</h4>
-                        <div class="review-rating">${starIcons}</div>
+                        
+                        <!-- 👇 Naya Rating Design Yahan Hai 👇 -->
+                        <div class="premium-rating-box">
+                            <span class="rating-number">${ratingNumber}.0</span> 
+                            <span class="rating-star">⭐</span>
+                        </div>
+
                         <p class="review-text">"${feedback.experience}"</p>
                     </div>
                 `;
