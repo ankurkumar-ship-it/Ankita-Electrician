@@ -463,6 +463,57 @@ if (feedbackFormElement) {
           });
     });
 }
+        
+// ==========================================
+// 🌟 CUSTOMER REVIEWS FETCH KARNE KA NAYA CODE 🌟
+// ==========================================
+async function loadReviews() {
+    const reviewsContainer = document.getElementById("reviews-list");
+
+    try {
+        // Google Sheet se data maangna (Aapka pehle se bana scriptURL use ho raha hai)
+        const response = await fetch(scriptURL);
+        const data = await response.json();
+        
+        // Data aate hi 'Loading...' wala text hata dena
+        reviewsContainer.innerHTML = ""; 
+        
+        // Check karna ki sheet mein feedbacks hain ya nahi
+        if (data.feedbacks && data.feedbacks.length > 0) {
+            
+            // Har ek feedback/review ko card mein badalna
+            data.feedbacks.forEach(feedback => {
+                
+                // Rating ko stars (⭐) mein convert karna
+                let ratingNumber = parseInt(feedback.rating) || 5; 
+                let starIcons = "⭐".repeat(ratingNumber); 
+                
+                // Card ka HTML structure
+                const cardHTML = `
+                    <div class="review-card">
+                        <h4 class="review-name">${feedback.name}</h4>
+                        <div class="review-rating">${starIcons}</div>
+                        <p class="review-text">"${feedback.experience}"</p>
+                    </div>
+                `;
+                
+                // Card ko container mein jod dena
+                reviewsContainer.innerHTML += cardHTML;
+            });
+            
+        } else {
+            // Agar sheet khali hai toh yeh message dikhayega
+            reviewsContainer.innerHTML = "<p style='color: #cbd5e1;'>Abhi tak koi review nahi aaya hai. Pehla review aap dijiye!</p>";
+        }
+        
+    } catch (error) {
+        console.error("Reviews load hone mein error:", error);
+        reviewsContainer.innerHTML = "<p style='color: #ffcc00;'>Reviews load nahi ho paye. Kripya apna internet connection check karein.</p>";
+    }
+}
+
+// Jaise hi website khule, yeh function apne aap chal jayega
+window.addEventListener('DOMContentLoaded', loadReviews);
     </script>
 </body>
 </html>
