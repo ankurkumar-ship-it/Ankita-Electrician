@@ -617,8 +617,9 @@ body {
 
 .reviews-container {
     display: flex;
+    justify-content: center; /* 👇 YEH NAYI LINE ISE BEECH MEIN LAYEGI */
     gap: 20px;
-    overflow-x: auto; /* Left-Right scroll karne ke liye */
+    overflow-x: auto; 
     padding: 20px;
     max-width: 1000px;
     margin: 0 auto;
