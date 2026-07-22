@@ -580,3 +580,31 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 15px 25px rgba(245, 158, 11, 0.6);
 }
+
+/* Style for the maintenance offer section (new code) */
+.banner-section .maintenance-offer {
+  background-color: rgba(255, 204, 0, 0.1); /* Matching image_5.png accent color (yellow) but translucent */
+  border: 1px solid rgba(255, 204, 0, 0.5); /* Semi-transparent yellow border */
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Space between icon and text */
+  margin-top: 20px; /* Space from paragraph above */
+  width: fit-content; /* Fit the content inside */
+  margin-left: auto; /* Center horizontally in the banner section */
+  margin-right: auto;
+}
+
+.banner-section .offer-icon {
+  width: 60px; /* Adjust size based on design */
+  height: 60px;
+}
+
+.banner-section .offer-text {
+  color: #ffcc00; /* Matching image_5.png accent color (yellow) */
+  font-size: 1.5rem; /* Larger font size */
+  font-weight: bold;
+  margin: 0; /* Remove default paragraph margin */
+}
