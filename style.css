@@ -608,3 +608,52 @@ body {
   font-weight: bold;
   margin: 0; 
 }
+
+/* --- Customer Reviews Section --- */
+.reviews {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.reviews-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Left-Right scroll karne ke liye */
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar ko hide karne ke liye */
+.reviews-container::-webkit-scrollbar {
+    display: none;
+}
+
+.review-card {
+    background-color: #1e293b; /* Aapka dark blue color */
+    border-left: 4px solid #ffcc00; /* Yellow line */
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 280px; /* Card ki chaudai */
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.review-name {
+    color: #ffcc00;
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+}
+
+.review-rating {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.review-text {
+    color: #cbd5e1; /* Halka white/grey text */
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
