@@ -16,12 +16,13 @@
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
+      OneSignalDeferred.push(function(OneSignal) {
+        OneSignal.init({
           appId: "90eb598a-b87a-4eb2-8d05-6e20067fe0fe",
         });
-        // App khulte hi notification ki permission maangega
-        OneSignal.Slidedown.promptPush();
+        
+        // 👇 YEH NAYI LINE SIRF ADMIN HTML MEIN DALNI HAI 👇
+        OneSignal.User.addTag("user_role", "admin");
       });
     </script>
 </head>
