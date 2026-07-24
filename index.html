@@ -377,7 +377,7 @@
         // ==========================================
         // 3. GOOGLE SHEETS API LOGIC (Booking & Feedback)
         // ==========================================
-       const scriptURL = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
         
         // A. BOOKING FORM SUBMIT
         document.getElementById('bookingForm').addEventListener('submit', function(event) {
@@ -420,129 +420,121 @@
               });
         });
 
-       // B. FEEDBACK FORM SUBMIT (Suraksha Kavach ke saath)
-const feedbackFormElement = document.getElementById('feedbackForm');
+        // B. FEEDBACK FORM SUBMIT (Suraksha Kavach ke saath)
+        const feedbackFormElement = document.getElementById('feedbackForm');
 
-// Yeh 'if' check karega ki form page par hai ya nahi, tabhi aage badhega
-if (feedbackFormElement) {
-    feedbackFormElement.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        
-        const submitBtn = document.getElementById('submit-fb-btn');
-        const btnTextSpan = document.getElementById('btn-submit-fb');
-        const originalText = btnTextSpan.innerHTML;
-        
-        btnTextSpan.innerHTML = "Submitting...";
-        submitBtn.disabled = true;
+        if (feedbackFormElement) {
+            feedbackFormElement.addEventListener('submit', function(event) {
+                event.preventDefault(); 
+                
+                const submitBtn = document.getElementById('submit-fb-btn');
+                const btnTextSpan = document.getElementById('btn-submit-fb');
+                const originalText = btnTextSpan.innerHTML;
+                
+                btnTextSpan.innerHTML = "Submitting...";
+                submitBtn.disabled = true;
 
-        let formData = new FormData(this);
-        formData.append("action", "feedback"); 
+                let formData = new FormData(this);
+                formData.append("action", "feedback"); 
 
-        // Aapka pehle se likha scriptURL variable yahan hona chahiye
-        fetch(scriptURL, { method: 'POST', body: formData })
-          .then(response => response.json()) 
-          .then(data => {
-              if(data.result === "success") {
-                  closeFeedbackForm(); 
-                  document.getElementById('feedback-success-modal').style.display = 'flex';
-                  this.reset(); 
-                  
-                  btnTextSpan.innerHTML = originalText;
-                  submitBtn.disabled = false;
+                fetch(scriptURL, { method: 'POST', body: formData })
+                  .then(response => response.json()) 
+                  .then(data => {
+                      if(data.result === "success") {
+                          closeFeedbackForm(); 
+                          document.getElementById('feedback-success-modal').style.display = 'flex';
+                          this.reset(); 
+                          
+                          btnTextSpan.innerHTML = originalText;
+                          submitBtn.disabled = false;
 
-                  setTimeout(function() {
-                      document.getElementById('feedback-success-modal').style.display = 'none';
-                  }, 3000); 
-              } else {
-                  alert("Google Sheet me Error aayi hai: " + data.error);
-                  btnTextSpan.innerHTML = originalText;
-                  submitBtn.disabled = false;
-              }
-          })
-          .catch(error => {
-              alert("Internet connection ya API me dikkat hai.");
-              btnTextSpan.innerHTML = originalText;
-              submitBtn.disabled = false;
-          });
-    });
-}
-        
-// ==========================================
-// 🌟 SIRF AVERAGE RATING DIKHANE KA CODE 🌟
-// ==========================================
-async function loadReviews() {
-    const avgContainer = document.getElementById("average-rating-container");
-
-    try {
-        const response = await fetch(scriptURL);
-        const data = await response.json();
-        
-        if (data.feedbacks && data.feedbacks.length > 0) {
-            
-            let totalRating = 0;
-            let totalReviews = data.feedbacks.length;
-            
-            // Sabki rating jodna
-            data.feedbacks.forEach(feedback => {
-                totalRating += parseInt(feedback.rating) || 5; 
+                          setTimeout(function() {
+                              document.getElementById('feedback-success-modal').style.display = 'none';
+                          }, 3000); 
+                      } else {
+                          alert("Google Sheet me Error aayi hai: " + data.error);
+                          btnTextSpan.innerHTML = originalText;
+                          submitBtn.disabled = false;
+                      }
+                  })
+                  .catch(error => {
+                      alert("Internet connection ya API me dikkat hai.");
+                      btnTextSpan.innerHTML = originalText;
+                      submitBtn.disabled = false;
+                  });
             });
-            
-            // Average nikalna
-            let averageRating = (totalRating / totalReviews).toFixed(1); 
-            
-            // Sirf Center wala Average Box dikhana
-            if (avgContainer) {
-                avgContainer.innerHTML = `
-                    <div class="avg-number-box">
-                        <span class="avg-number">${averageRating}</span>
-                        <span class="avg-star">⭐</span>
-                    </div>
-                    <div class="avg-text">Based on ${totalReviews} customer reviews</div>
-                `;
-            }
-            
-        } else {
-            if (avgContainer) {
-                avgContainer.innerHTML = "<p style='color: #cbd5e1; margin-top: 15px;'>Abhi tak koi review nahi aaya hai. Pehla review aap dijiye!</p>";
+        }
+                
+        // ==========================================
+        // 🌟 SIRF AVERAGE RATING DIKHANE KA CODE 🌟
+        // ==========================================
+        async function loadReviews() {
+            const avgContainer = document.getElementById("average-rating-container");
+
+            try {
+                const response = await fetch(scriptURL);
+                const data = await response.json();
+                
+                if (data.feedbacks && data.feedbacks.length > 0) {
+                    
+                    let totalRating = 0;
+                    let totalReviews = data.feedbacks.length;
+                    
+                    data.feedbacks.forEach(feedback => {
+                        totalRating += parseInt(feedback.rating) || 5; 
+                    });
+                    
+                    let averageRating = (totalRating / totalReviews).toFixed(1); 
+                    
+                    if (avgContainer) {
+                        avgContainer.innerHTML = `
+                            <div class="avg-number-box">
+                                <span class="avg-number">${averageRating}</span>
+                                <span class="avg-star">⭐</span>
+                            </div>
+                            <div class="avg-text">Based on ${totalReviews} customer reviews</div>
+                        `;
+                    }
+                    
+                } else {
+                    if (avgContainer) {
+                        avgContainer.innerHTML = "<p style='color: #cbd5e1; margin-top: 15px;'>Abhi tak koi review nahi aaya hai. Pehla review aap dijiye!</p>";
+                    }
+                }
+                
+            } catch (error) {
+                console.error("Error:", error);
             }
         }
-        
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-window.addEventListener('DOMContentLoaded', loadReviews);
+
+        // ==========================================
+        // 📅 PAST DATES KO DISABLE KARNE KA CODE
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Reviews load karna
+            loadReviews();
+
+            // 2. Past dates ko block karna
+            var dateInput = document.querySelector('input[type="date"]');
+            
+            if(dateInput) {
+                var dtToday = new Date();
+                
+                var month = dtToday.getMonth() + 1; // Mahina (1-12)
+                var day = dtToday.getDate();        // Tareekh
+                var year = dtToday.getFullYear();   // Saal
+                
+                if(month < 10) {
+                    month = '0' + month.toString();
+                }
+                if(day < 10) {
+                    day = '0' + day.toString();
+                }
+                
+                var maxDate = year + '-' + month + '-' + day;
+                dateInput.setAttribute('min', maxDate);
+            }
+        });
     </script>
-    <script>
-    // ==========================================
-    // 📅 PAST DATES KO DISABLE KARNE KA CODE
-    // ==========================================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Form mein jo date wala input hai usko dhundhna
-        var dateInput = document.querySelector('input[type="date"]');
-        
-        if(dateInput) {
-            var dtToday = new Date();
-            
-            var month = dtToday.getMonth() + 1; // Mahina (1-12)
-            var day = dtToday.getDate();        // Tareekh
-            var year = dtToday.getFullYear();   // Saal
-            
-            // Agar mahina ya tareekh 10 se kam hai, toh uske aage '0' lagana zaroori hai (jaise 07)
-            if(month < 10) {
-                month = '0' + month.toString();
-            }
-            if(day < 10) {
-                day = '0' + day.toString();
-            }
-            
-            // YYYY-MM-DD format mein aaj ki date banana
-            var maxDate = year + '-' + month + '-' + day;
-            
-            // Input mein 'min' attribute set kar dena
-            dateInput.setAttribute('min', maxDate);
-        }
-    });
-</script>
 </body>
 </html>
