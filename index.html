@@ -511,10 +511,12 @@ async function loadReviews() {
         console.error("Error:", error);
     }
 }
-
-// ==========================================
-// 📅 PAST DATES KO DISABLE KARNE KA CODE
-// ==========================================
+window.addEventListener('DOMContentLoaded', loadReviews);
+    </script>
+    <script>
+    // ==========================================
+    // 📅 PAST DATES KO DISABLE KARNE KA CODE
+    // ==========================================
     document.addEventListener('DOMContentLoaded', function() {
         // Form mein jo date wala input hai usko dhundhna
         var dateInput = document.querySelector('input[type="date"]');
@@ -541,7 +543,6 @@ async function loadReviews() {
             dateInput.setAttribute('min', maxDate);
         }
     });
-window.addEventListener('DOMContentLoaded', loadReviews);
-    </script>
+</script>
 </body>
 </html>
