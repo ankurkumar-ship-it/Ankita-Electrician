@@ -512,6 +512,35 @@ async function loadReviews() {
     }
 }
 
+// ==========================================
+// 📅 PAST DATES KO DISABLE KARNE KA CODE
+// ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form mein jo date wala input hai usko dhundhna
+        var dateInput = document.querySelector('input[type="date"]');
+        
+        if(dateInput) {
+            var dtToday = new Date();
+            
+            var month = dtToday.getMonth() + 1; // Mahina (1-12)
+            var day = dtToday.getDate();        // Tareekh
+            var year = dtToday.getFullYear();   // Saal
+            
+            // Agar mahina ya tareekh 10 se kam hai, toh uske aage '0' lagana zaroori hai (jaise 07)
+            if(month < 10) {
+                month = '0' + month.toString();
+            }
+            if(day < 10) {
+                day = '0' + day.toString();
+            }
+            
+            // YYYY-MM-DD format mein aaj ki date banana
+            var maxDate = year + '-' + month + '-' + day;
+            
+            // Input mein 'min' attribute set kar dena
+            dateInput.setAttribute('min', maxDate);
+        }
+    });
 window.addEventListener('DOMContentLoaded', loadReviews);
     </script>
 </body>
