@@ -44,7 +44,7 @@
 </head>
 <body>
 
-    <!-- 1. Welcome Language Popup -->
+   <!-- 1. Welcome Language Popup -->
     <div id="language-modal" class="modal-overlay">
         <div class="modal-box">
             <h2>Welcome to Ankita Electrician</h2>
@@ -62,13 +62,16 @@
             <img src="image/icon.png" alt="Logo" class="nav-icon">
             <h1>Ankita Electrician</h1>
         </div>
-        <div class="header-right">
-            <!-- NAYA: My Bookings Button (Header ke liye) -->
-<button onclick="openTrackModal()" style="background: #1e293b; color: white; padding: 8px 15px; border: 1px solid #3b82f6; border-radius: 20px; cursor: pointer; font-weight: bold; margin-right: 15px; display: inline-flex; align-items: center; gap: 6px;">
-    <!-- Naya Icon Yahan Daalein -->
-    <img src="image/booking-history.png.png" alt="History" style="width: 16px;">
-    My Bookings
-</button>
+        
+        <!-- Yahan display: flex lagaya hai taaki dono button ek line me rahein -->
+        <div class="header-right" style="display: flex; align-items: center;">
+            
+            <!-- 👇 NAYA: My Bookings Button (Header ke liye) 👇 -->
+            <button onclick="openTrackModal()" style="background: #1e293b; color: white; padding: 8px 15px; border: 1px solid #3b82f6; border-radius: 20px; cursor: pointer; font-weight: bold; margin-right: 15px; display: inline-flex; align-items: center; gap: 6px;">
+                <img src="image/booking-history.png" alt="History" style="width: 16px;">
+                My Bookings
+            </button>
+
            <!-- NUMBER HATAKAR CALL NOW LIKHA GAYA -->
            <a href="tel:+918298250952" class="contact-section" style="text-decoration: none; color: white;">
                 <img src="image/call.png" alt="Call" class="nav-icon">
@@ -76,7 +79,6 @@
             </a>
         </div>
     </header>
-
     <!-- Hero Section (Main Banner) -->
     <section class="hero">
         <h2 id="hero-title">The most trusted electrician for your home!</h2>
