@@ -211,7 +211,7 @@
     </main>
     
     <!-- API se Data laane wala JavaScript -->
-    <script>
+   <script>
     const apiUrl = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
 
     // --- 🔒 SECURITY LOCK LOGIC ---
@@ -336,9 +336,12 @@
                 let dateObj = new Date(row.timestamp);
                 let bookedDate = dateObj.toLocaleDateString('en-IN');
                 
-                // Kaam karwane ki asli Appointment Date aur Time
-                let apptDate = row.date || "Not provided";
-                let apptTime = row.time || row.Time || "Not specified";
+                // 👇 YAHAN SMART CHECKER LAGA DIYA GAYA HAI 👇
+                let exactDate = row['Appointment Date'] || row.Date || row.date || row.custDate;
+                let apptDate = exactDate ? exactDate : "Not provided";
+
+                let exactTime = row['Appointment Time'] || row.Time || row.time || row.custTime;
+                let apptTime = exactTime ? exactTime : "Not specified";
                 
                 let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
@@ -353,11 +356,10 @@
                         <strong>${row.name}</strong><br>
                         <small style="color: gray;">${row.phone}</small><br>
                         <button onclick="showCustomerHistory('${row.phone}', '${row.name}')" style="background:#3b82f6; color:white; padding:3px 8px; border:none; border-radius:4px; cursor:pointer; margin-top:5px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;">
-                        <img src="image/user-history.png" style="width: 12px;"> History
+                        <img src="image/user-history.png.png" style="width: 12px;"> History
                     </button>
                     </td>
                     <td>${row.service}</td>
-                    <!-- 👇 NAYA: Table me Appointment aur Booking dono ek sath sundar design me -->
                     <td>
                         <div style="font-size: 14px; font-weight: bold; color: #e2e8f0; margin-bottom: 4px;">
                             📅 ${apptDate} <br> 
@@ -377,7 +379,7 @@
                         <strong>${row.name}</strong><br>
                         <small style="color: gray;">Booked: ${bookedDate}</small><br>
                          <button onclick="showCustomerHistory('${row.phone}', '${row.name}')" style="background:#3b82f6; color:white; padding:5px 12px; border:none; border-radius:4px; cursor:pointer; margin-top:5px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
-                         <img src="image/user-history.png" style="width: 14px;"> View History
+                         <img src="image/user-history.png.png" style="width: 14px;"> View History
                     </button>
                     </td>
                     <td>${row.service} <br> <span class="status ${statusClass}" style="font-size:10px; padding: 2px 6px; margin-top: 5px; display: inline-block;">${row.status}</span></td>
@@ -522,9 +524,11 @@ function showCustomerHistory(phoneNumber, customerName) {
         customerHistory.forEach((b, index) => {
             let statusColor = b.status === 'Completed' ? '#22c55e' : (b.status === 'Cancelled' ? '#ef4444' : '#f59e0b');
             
-            // Appointment Details
-            let apptDate = b.date || "Not provided";
-            let exactTime = b.time || b.Time; 
+            // 👇 YAHAN BHI SMART CHECKER LAGA DIYA GAYA HAI 👇
+            let exactDate = b['Appointment Date'] || b.Date || b.date || b.custDate;
+            let apptDate = exactDate ? exactDate : "Not provided";
+
+            let exactTime = b['Appointment Time'] || b.Time || b.time || b.custTime;
             let apptTime = exactTime ? exactTime : "Not specified";
             
             // Form Submit (Booking) Details
@@ -540,7 +544,7 @@ function showCustomerHistory(phoneNumber, customerName) {
                     <span style="background:${statusColor}; color:white; padding:2px 8px; border-radius:12px; font-size:12px;">${b.status}</span>
                 </div>
                 
-                <!-- 👇 NAYA: 2-Column Design (Aamne-Saamne) 👇 -->
+                <!-- 2-Column Design (Aamne-Saamne) -->
                 <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size:13px; color:#cbd5e1; margin-bottom: 12px;">
                     
                     <!-- Left Box: Appointment Details -->
