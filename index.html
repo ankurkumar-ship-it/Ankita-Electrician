@@ -165,17 +165,12 @@
         <div class="form-container">
             <form id="bookingForm" class="booking-form">
                 
+                <!-- Customer Details -->
                 <input type="text" id="custName" name="name" placeholder="Full Name" required>
                 <input type="tel" id="custPhone" name="phone" placeholder="Phone Number" required>
                 <input type="text" id="custAddress" name="address" placeholder="Address" required>
                 
-                <!-- 👇 YAHAN DATE AUR TIME EKDUM PERFECT HAI 👇 -->
-                <div style="display: flex; gap: 15px;">
-                    <input type="text" id="custDate" name="Appointment Date" placeholder="Select Date" required style="flex: 1;" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'">
-                    
-                    <input type="text" id="custTime" name="Appointment Time" placeholder="Select Time" required style="flex: 1;" onfocus="(this.type='time')" onblur="if(!this.value) this.type='text'">
-                </div>
-
+                <!-- Service Selection -->
                 <select id="custService" name="service" required>
                     <option value="" disabled selected> Select Service </option>
                     <option value="House Wiring">House Wiring</option>
@@ -186,11 +181,13 @@
                     <option value="Other">Other</option>
                 </select>
 
+                <!-- 👇 Aapka Pehle Jaisa Simple Date & Time wala dabbe 👇 -->
                 <!-- Date ke liye -->
                 <input type="date" id="custDate" name="Appointment Date" required>
 
                 <!-- Time ke liye -->
                 <input type="time" id="custTime" name="Appointment Time" required>
+                <!-- 👆 ================================================ 👆 -->
 
                 <!-- Problem / Message -->
                 <textarea id="custProblem" name="problem" rows="4" placeholder="Write some details about the problem..." required></textarea>
