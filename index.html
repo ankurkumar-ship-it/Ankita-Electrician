@@ -167,7 +167,7 @@
                 
                 <input type="text" id="custName" name="name" placeholder="Full Name" required>
                 
-                <input type="tel" id="custPhone" name="phone" placeholder="Phone Number" required>
+                <input type="tel" name="phone" placeholder="Phone Number" required maxlength="10" minlength="10" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 15px; box-sizing: border-box;">
                 
                 <input type="text" id="custAddress" name="address" placeholder="Address" required>
                 
@@ -389,7 +389,16 @@
         
         // A. BOOKING FORM SUBMIT
         document.getElementById('bookingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
+
+            // Form se phone number uthana
+           let phoneNumber = document.querySelector('input[name="phone"]').value;
+    
+    // Check karna ki number exactly 10 digit ka hai ya nahi
+    if(phoneNumber.length !== 10) {
+        alert("Kripya apna 10-digit ka sahi mobile number daalein!");
+        return; // Yeh line code ko yahi rok degi aur booking nahi hone degi
+    }
             
             let audio = document.getElementById('successSound');
             if(audio) {
