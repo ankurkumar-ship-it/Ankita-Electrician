@@ -369,9 +369,6 @@
                     <td>
                         <strong>${row.name}</strong><br>
                         <small style="color: gray;">${row.phone}</small><br>
-                        <button onclick="showCustomerHistory('${row.phone}', '${row.name}')" style="background:#3b82f6; color:white; padding:3px 8px; border:none; border-radius:4px; cursor:pointer; margin-top:5px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;">
-                        <img src="image/user-history.png.png" style="width: 12px;"> History
-                    </button>
                     </td>
                     <td>${row.service}</td>
                     <td>
@@ -543,7 +540,8 @@ function showCustomerHistory(phoneNumber, customerName) {
             let apptDate = exactDate ? exactDate : "Not provided";
 
             let exactTime = b['Appointment Time'] || b.Time || b.time || b.custTime;
-            let apptTime = exactTime ? exactTime : "Not specified";
+            // 👇 Yahan humne exactTime ko formatAMPM ke andar daal diya 👇
+            let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
             
             // Form Submit (Booking) Details
             let bookedDate = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-IN') : "Unknown";
