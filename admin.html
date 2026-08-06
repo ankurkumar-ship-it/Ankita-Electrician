@@ -165,7 +165,23 @@
             <div class="table-container">
                 <h2 style="color: white; margin-bottom: 15px;">
                     <span onclick="switchTab('dashboard-view', document.querySelector('.nav-links li:first-child'))" style="cursor: pointer; margin-right: 15px; font-size: 24px; text-decoration: none;" title="Back to Dashboard">⬅️</span> 
-                    Customer History & Details
+                   <!-- 👇 NAYA: Heading with VIP Search Box 👇 -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+    
+    <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+        <button onclick="goBack()" style="background: transparent; border: none; font-size: 20px; color: #3b82f6; cursor: pointer; padding: 0;">⬅</button> 
+        Customer History & Details
+    </h2>
+    
+    <!-- VIP Search Box (Bina kisi extra image download ke) -->
+    <div style="position: relative; width: 100%; max-width: 300px;">
+        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px;">🔍</span>
+        
+        <input type="text" id="searchInput" onkeyup="filterCustomers()" placeholder="Search Name or Number..." style="width: 100%; padding: 10px 15px 10px 35px; border-radius: 25px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+    </div>
+
+</div>
+<!-- 👆 ======================================== 👆 -->
                 </h2>
                 <table class="data-table">
                     <thead>
