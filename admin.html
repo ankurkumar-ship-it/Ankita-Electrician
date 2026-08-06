@@ -212,7 +212,20 @@
     
     <!-- API se Data laane wala JavaScript -->
    <script>
-    const apiUrl = "https://script.google.com/macros/s/AKfycbyKiVCEofGbmMw6rTDJUmdHvrPjCioFJMoL_aQoUeQEp-SkdClJJdr05ct-BwCZ6fBfgA/exec";
+    const apiUrl = "https://script.google.com/macros/s/AKfycbzOJlQ0m-xnd-mqDJQsevTALPmty948Inji2XxSdg8DXGM8Gg9FYq6asSNKXZgXaTxTwA/exec";
+
+       // 👇 NAYA CODE: 24-Hour time ko 12-Hour (AM/PM) mein badalne ka machine 👇
+    function formatAMPM(timeString) {
+        if (!timeString || !timeString.includes(':')) return timeString;
+        let timeParts = timeString.split(':');
+        let hours = parseInt(timeParts[0]);
+        let minutes = timeParts[1];
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // 0 baje ko 12 banata hai
+        let finalHours = hours < 10 ? '0' + hours : hours;
+        return finalHours + ':' + minutes + ' ' + ampm;
+    }
 
     // --- 🔒 SECURITY LOCK LOGIC ---
     function checkPin() {
@@ -341,7 +354,8 @@
                 let apptDate = exactDate ? exactDate : "Not provided";
 
                 let exactTime = row['Appointment Time'] || row.Time || row.time || row.custTime;
-                let apptTime = exactTime ? exactTime : "Not specified";
+                // Yahan exactTime ko seedha dikhane ke bajaye formatAMPM ke andar daal diya
+                let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
                 
                 let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
 
