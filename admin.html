@@ -613,28 +613,23 @@ function closeKundliModal() {
     }
 }  
 // ==========================================
-// 🔍 LIVE SEARCH (Name & Number filter)
-// ==========================================
+        // 🔍 SUPER LIVE SEARCH (Sab kuch dhoondhega)
+        // ==========================================
         function filterCustomers() {
-            // Search box me jo likha hai use uthao aur chhote aksharon (lowercase) me badal do
             let input = document.getElementById("searchInput").value.toLowerCase();
             
             // Table ki saari rows ko pakdo
             let tableRows = document.querySelectorAll("tbody tr");
             
             tableRows.forEach(row => {
-                // Pehla column pakdo jisme Name aur Phone Number likha hota hai
-                let nameColumn = row.getElementsByTagName("td")[0]; 
+                // Poori row ka saara text (Name, Number, Service, Date sab) ek sath utha lo
+                let rowText = row.textContent || row.innerText;
                 
-                if (nameColumn) {
-                    let textData = nameColumn.textContent || nameColumn.innerText;
-                    
-                    // Agar type kiya hua letter naam ya number me milta hai, toh dikhao, warna chhupao
-                    if (textData.toLowerCase().indexOf(input) > -1) {
-                        row.style.display = ""; 
-                    } else {
-                        row.style.display = "none"; 
-                    }
+                // Agar type kiya hua word poori row mein KAHIN BHI hai, toh dikhao
+                if (rowText.toLowerCase().indexOf(input) > -1) {
+                    row.style.display = ""; 
+                } else {
+                    row.style.display = "none"; 
                 }
             });
         }
