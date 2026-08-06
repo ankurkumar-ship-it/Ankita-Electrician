@@ -611,7 +611,33 @@ function closeKundliModal() {
     if(modal) {
         modal.style.display = 'none';
     }
-}    
+}  
+// ==========================================
+// 🔍 LIVE SEARCH (Name & Number filter)
+// ==========================================
+        function filterCustomers() {
+            // Search box me jo likha hai use uthao aur chhote aksharon (lowercase) me badal do
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            
+            // Table ki saari rows ko pakdo
+            let tableRows = document.querySelectorAll("tbody tr");
+            
+            tableRows.forEach(row => {
+                // Pehla column pakdo jisme Name aur Phone Number likha hota hai
+                let nameColumn = row.getElementsByTagName("td")[0]; 
+                
+                if (nameColumn) {
+                    let textData = nameColumn.textContent || nameColumn.innerText;
+                    
+                    // Agar type kiya hua letter naam ya number me milta hai, toh dikhao, warna chhupao
+                    if (textData.toLowerCase().indexOf(input) > -1) {
+                        row.style.display = ""; 
+                    } else {
+                        row.style.display = "none"; 
+                    }
+                }
+            });
+        }
 </script>
 </body>
 </html>
