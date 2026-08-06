@@ -634,7 +634,6 @@
     <div onclick="openTrackModal()" style="position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); z-index: 1000;">
         🔍 My Bookings
     </div>
-
 <!-- 📱 TRACK BOOKING MODAL (Number Daalne ka dabba) -->
 <div id="track-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
     <div style="background:#1e293b; padding:20px; border-radius:10px; width:90%; max-width:400px; color:white; text-align:center;">
@@ -664,114 +663,101 @@
 
 <script>
     // ==========================================
-    // 🔍 CUSTOMER TRACKING LOGIC (My Bookings - Premium Design)
-    // ==========================================
-    
-    // Time ko AM/PM mein badalne wali machine
-    function formatAMPM(timeString) {
-        if (!timeString || !timeString.includes(':')) return timeString;
-        let timeParts = timeString.split(':');
-        let hours = parseInt(timeParts[0]);
-        let minutes = timeParts[1];
-        let ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; 
-        let finalHours = hours < 10 ? '0' + hours : hours;
-        return finalHours + ':' + minutes + ' ' + ampm;
-    }
+        // 🔍 CUSTOMER TRACKING LOGIC (My Bookings - Premium Design)
+        // ==========================================
 
-    function openTrackModal() {
-        document.getElementById('track-phone').value = ""; 
-        document.getElementById('track-modal').style.display = 'flex';
-    }
-
-    function closeTrackModal() {
-        document.getElementById('track-modal').style.display = 'none';
-    }
-
-    function closeCustomerHistoryModal() {
-        document.getElementById('customer-history-modal').style.display = 'none';
-    }
-
-    // Data Google Sheet se laane ka magic function
-    async function fetchMyBookings() {
-        let phone = document.getElementById('track-phone').value.trim();
-        if(phone === "") {
-            alert("Kripya apna mobile number daalein!");
-            return;
+        // Time ko AM/PM mein badalne wali machine (Agar pehle nahi dali thi toh isko bhi daal dein)
+        function formatAMPM(timeString) {
+            if (!timeString || !timeString.includes(':')) return timeString;
+            let timeParts = timeString.split(':');
+            let hours = parseInt(timeParts[0]);
+            let minutes = timeParts[1];
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            let finalHours = hours < 10 ? '0' + hours : hours;
+            return finalHours + ':' + minutes + ' ' + ampm;
         }
 
-        let btn = document.getElementById('track-btn');
-        let originalText = btn.innerHTML;
-        btn.innerHTML = "Searching...";
-        btn.disabled = true;
+        // Data Google Sheet se laane ka magic function (YAHI NAYA VIP DESIGN BANAYEGA)
+        async function fetchMyBookings() {
+            let phone = document.getElementById('track-phone').value.trim();
+            if(phone === "") {
+                alert("Kripya apna mobile number daalein!");
+                return;
+            }
 
-        try {
-            const response = await fetch(scriptURL); // Aapke code me scriptURL upar define hona chahiye
-            const data = await response.json();
-            
-            let myBookings = data.bookings.filter(b => b.phone == phone);
-            let contentDiv = document.getElementById('my-history-content');
-            
-            if(myBookings.length === 0) {
-                contentDiv.innerHTML = "<p style='text-align:center; color:#cbd5e1;'>Is number se koi booking nahi mili. Kripya apna form bharein.</p>";
-            } else {
-                let html = "";
-                myBookings.forEach(b => {
-                    let statusColor = (b.status === 'Completed' || b.status === 'Confirm') ? '#22c55e' : (b.status === 'Cancelled' || b.status === 'Cancel' ? '#ef4444' : '#f59e0b');
-                    
-                    // Smart Date aur Time nikalna (AM/PM ke sath)
-                    let exactDate = b.date || b['Appointment Date'] || b.custDate || "Not provided";
-                    let exactTime = b.time || b['Appointment Time'] || b.custTime || "";
-                    let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
-                    
-                    // Form kab bhara gaya uski details
-                    let bookedDate = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-IN') : "Unknown";
-                    let bookedTime = b.timestamp ? new Date(b.timestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'}) : "";
-                    let showProblem = b.problem || "No extra details";
-                    
-                    // 👇 NAYA: Admin jaisa 2-Column VIP Card 👇
-                    html += `
-                    <div style="background:#334155; padding:15px; margin-bottom:12px; border-radius:8px; border-left: 4px solid ${statusColor}; text-align: left;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid #475569; padding-bottom: 8px;">
-                            <strong style="color:#38bdf8; font-size:16px;">${b.service}</strong>
-                            <span style="background:${statusColor}; color:white; padding:2px 8px; border-radius:12px; font-size:12px;">${b.status}</span>
-                        </div>
+            let btn = document.getElementById('track-btn');
+            let originalText = btn.innerHTML;
+            btn.innerHTML = "Searching...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(scriptURL); 
+                const data = await response.json();
+                
+                let myBookings = data.bookings.filter(b => b.phone == phone);
+                let contentDiv = document.getElementById('my-history-content');
+                
+                if(myBookings.length === 0) {
+                    contentDiv.innerHTML = "<p style='text-align:center; color:#cbd5e1;'>Is number se koi booking nahi mili. Kripya apna form bharein.</p>";
+                } else {
+                    let html = "";
+                    myBookings.forEach(b => {
+                        let statusColor = (b.status === 'Completed' || b.status === 'Confirm') ? '#22c55e' : (b.status === 'Cancelled' || b.status === 'Cancel' ? '#ef4444' : '#f59e0b');
                         
-                        <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size:13px; color:#cbd5e1; margin-bottom: 12px;">
-                            
-                            <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(250, 204, 21, 0.2);">
-                                <div style="color: #facc15; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📍 Visit Scheduled</div>
-                                <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${exactDate}</div>
-                                <div>⏰ <b>Time:</b> ${apptTime}</div>
+                        // Smart Date aur Time nikalna (AM/PM ke sath)
+                        let exactDate = b.date || b['Appointment Date'] || b.custDate || "Not provided";
+                        let exactTime = b.time || b['Appointment Time'] || b.custTime || "";
+                        let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
+                        
+                        // Form kab bhara gaya uski details
+                        let bookedDate = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-IN') : "Unknown";
+                        let bookedTime = b.timestamp ? new Date(b.timestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'}) : "";
+                        let showProblem = b.problem || "No extra details";
+                        
+                        // 👇 NAYA: Admin jaisa 2-Column VIP Card 👇
+                        html += `
+                        <div style="background:#334155; padding:15px; margin-bottom:12px; border-radius:8px; border-left: 4px solid ${statusColor}; text-align: left;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid #475569; padding-bottom: 8px;">
+                                <strong style="color:#38bdf8; font-size:16px;">${b.service}</strong>
+                                <span style="background:${statusColor}; color:white; padding:2px 8px; border-radius:12px; font-size:12px;">${b.status}</span>
                             </div>
                             
-                            <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(148, 163, 184, 0.2);">
-                                <div style="color: #94a3b8; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📝 Form Submitted</div>
-                                <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${bookedDate}</div>
-                                <div>🕒 <b>Time:</b> ${bookedTime}</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size:13px; color:#cbd5e1; margin-bottom: 12px;">
+                                
+                                <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(250, 204, 21, 0.2);">
+                                    <div style="color: #facc15; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📍 Visit Scheduled</div>
+                                    <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${exactDate}</div>
+                                    <div>⏰ <b>Time:</b> ${apptTime}</div>
+                                </div>
+                                
+                                <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(148, 163, 184, 0.2);">
+                                    <div style="color: #94a3b8; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📝 Form Submitted</div>
+                                    <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${bookedDate}</div>
+                                    <div>🕒 <b>Time:</b> ${bookedTime}</div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div style="font-size:13px; color:#e2e8f0; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
-                            📝 <b>Problem Details:</b> <br>
-                            <span style="color: #cbd5e1;">${showProblem}</span>
-                        </div>
-                    </div>`;
-                });
-                contentDiv.innerHTML = html;
+                            
+                            <div style="font-size:13px; color:#e2e8f0; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
+                                📝 <b>Problem Details:</b> <br>
+                                <span style="color: #cbd5e1;">${showProblem}</span>
+                            </div>
+                        </div>`;
+                    });
+                    contentDiv.innerHTML = html;
+                }
+                
+                closeTrackModal();
+                document.getElementById('customer-history-modal').style.display = 'flex';
+                
+            } catch(e) {
+                alert("Internet mein dikkat hai ya server slow hai. Dobara try karein.");
             }
             
-            closeTrackModal();
-            document.getElementById('customer-history-modal').style.display = 'flex';
-            
-        } catch(e) {
-            alert("Internet mein dikkat hai ya server slow hai. Dobara try karein.");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
-        
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }
 </script>
 </body>
 </html>
