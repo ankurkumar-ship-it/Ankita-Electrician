@@ -9,17 +9,19 @@
     <meta name="theme-color" content="#1a1a2e">
     
     <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
 
     <!-- ========================================== -->
-<!-- 🔔 VIP ADMIN NOTIFICATION POPUP -->
-<!-- ========================================== -->
-<div id="new-booking-toast" style="display: none; position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 9999; font-weight: bold; align-items: center; gap: 12px; transform: translateX(120%); transition: transform 0.5s ease-in-out; border-left: 5px solid #166534;">
-    <div style="font-size: 24px;">🔔</div>
-    <div>
-        <div style="font-size: 16px; margin-bottom: 2px;">New Booking Received!</div>
-        <div id="new-booking-name" style="font-size: 13px; font-weight: normal; color: #dcfce7;">Checking...</div>
+    <!-- 🔔 VIP ADMIN NOTIFICATION POPUP -->
+    <!-- ========================================== -->
+    <div id="new-booking-toast" style="display: none; position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 9999; font-weight: bold; align-items: center; gap: 12px; transform: translateX(120%); transition: transform 0.5s ease-in-out; border-left: 5px solid #166534;">
+        <div style="font-size: 24px;">🔔</div>
+        <div>
+            <div style="font-size: 16px; margin-bottom: 2px;">New Booking Received!</div>
+            <div id="new-booking-name" style="font-size: 13px; font-weight: normal; color: #dcfce7;">Checking...</div>
+        </div>
     </div>
-</div>
     <!-- 🔔 Notification Sound -->
     <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
@@ -44,19 +46,14 @@
             <h2>Admin Panel</h2>
         </div>
         <ul class="nav-links">
-            <!-- 1. Dashboard Tab -->
             <li class="active" onclick="switchTab('dashboard-view', this)">
                 <img src="image/Dashboard.png" alt="Dashboard">
                 <span>Dashboard</span>
             </li>
-            
-            <!-- 2. Customers Tab -->
             <li onclick="switchTab('customers-view', this)">
                 <img src="image/user.png" alt="Customers">
                 <span>Customers</span>
             </li>
-            
-            <!-- 3. Feedback Tab -->
             <li onclick="switchTab('feedback-view', this)">
                 <img src="image/star-feedback.png" alt="Feedback">
                 <span>Feedback</span>
@@ -74,22 +71,20 @@
     <main class="main-content">
         
         <!-- ========================================== -->
-        <!-- 1. DASHBOARD VIEW (Pack kiya hua hissa)    -->
+        <!-- 1. DASHBOARD VIEW                          -->
         <!-- ========================================== -->
         <div id="dashboard-view" class="view-section">
             
         <!-- Top Navigation -->
         <header class="top-nav" style="display: flex; align-items: center; gap: 15px;">
-            <!-- Naya Logo Button (Click karne par menu khulega) -->
             <img src="image/icon.png" alt="Menu" id="menu-btn" onclick="toggleSidebar()" style="width: 45px; height: 45px; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-            
             <div class="welcome-text">
                 <h1 style="margin: 0;">Ankita Electrician </h1>
                 <p style="margin: 5px 0 0 0;">Here is the status of your business today.</p>
             </div>
         </header>
 
-            <!-- Dashboard Cards (Report Cards) -->
+            <!-- Dashboard Cards -->
             <section class="cards-section">
                 <div class="card card-blue" onclick="filterTable('All')" style="cursor: pointer;" title="Show All Bookings">
                     <div class="card-info">
@@ -148,7 +143,7 @@
                     </table>
                 </div>
             </section>
-        </div> <!-- YAHAN DASHBOARD VIEW KHATAM HUA -->
+        </div>
 
 
         <!-- ========================================== -->
@@ -158,23 +153,14 @@
             <div class="table-container">
                 <h2 style="color: white; margin-bottom: 15px;">
                     <span onclick="switchTab('dashboard-view', document.querySelector('.nav-links li:first-child'))" style="cursor: pointer; margin-right: 15px; font-size: 24px; text-decoration: none;" title="Back to Dashboard">⬅️</span> 
-                   <!-- 👇 NAYA: Heading with VIP Search Box 👇 -->
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-    
-    <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
-      
-        Customer History & Details
-    </h2>
-    
-    <!-- VIP Search Box (Bina kisi extra image download ke) -->
-    <div style="position: relative; width: 100%; max-width: 300px;">
-        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px;">🔍</span>
-        
-        <input type="text" id="searchInput" onkeyup="filterCustomers()" placeholder="Search Name or Number..." style="width: 100%; padding: 10px 15px 10px 35px; border-radius: 25px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-    </div>
-
-</div>
-<!-- 👆 ======================================== 👆 -->
+                    
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                    <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">Customer History & Details</h2>
+                    <div style="position: relative; width: 100%; max-width: 300px;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px;">🔍</span>
+                        <input type="text" id="searchInput" onkeyup="filterCustomers()" placeholder="Search Name or Number..." style="width: 100%; padding: 10px 15px 10px 35px; border-radius: 25px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                    </div>
+                </div>
                 </h2>
                 <table class="data-table">
                     <thead>
@@ -190,7 +176,7 @@
                     </tbody>
                 </table>
             </div>
-        </div> <!-- YAHAN CUSTOMERS VIEW KHATAM HUA -->
+        </div>
 
 
         <!-- ========================================== -->
@@ -215,15 +201,13 @@
                     </tbody>
                 </table>
             </div>
-        </div> <!-- YAHAN FEEDBACK VIEW KHATAM HUA -->
+        </div>
 
     </main>
     
-    <!-- API se Data laane wala JavaScript -->
    <script>
     const apiUrl = "https://script.google.com/macros/s/AKfycbzOJlQ0m-xnd-mqDJQsevTALPmty948Inji2XxSdg8DXGM8Gg9FYq6asSNKXZgXaTxTwA/exec";
 
-       // 👇 NAYA CODE: 24-Hour time ko 12-Hour (AM/PM) mein badalne ka machine 👇
     function formatAMPM(timeString) {
         if (!timeString || !timeString.includes(':')) return timeString;
         let timeParts = timeString.split(':');
@@ -231,7 +215,7 @@
         let minutes = timeParts[1];
         let ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
-        hours = hours ? hours : 12; // 0 baje ko 12 banata hai
+        hours = hours ? hours : 12; 
         let finalHours = hours < 10 ? '0' + hours : hours;
         return finalHours + ':' + minutes + ' ' + ampm;
     }
@@ -242,15 +226,12 @@
         let lockScreen = document.getElementById('security-lock');
         let errorMsg = document.getElementById('pin-error');
 
-        // Yahan aapka secret password set hai
         if (enteredPin === "50952") {
-            lockScreen.style.display = 'none'; // Gate khol do
-            
-            // Ek baar screen par click karne jaisa effect (Sound allow karne ke liye)
+            lockScreen.style.display = 'none'; 
             document.body.click(); 
         } else {
-            errorMsg.style.display = 'block'; // Error dikhao
-            document.getElementById('admin-pin').value = ''; // Box ko wapas khali kar do
+            errorMsg.style.display = 'block'; 
+            document.getElementById('admin-pin').value = ''; 
         }
     }
 
@@ -314,92 +295,26 @@
             let pending = 0;
             let completed = 0;
             
-        // ==========================================
-        // 🔔 NEW BOOKING RADAR (Background Checker)
-        // ==========================================
-
-            // Notification dabba update karo
-                    document.getElementById('new-booking-name').innerHTML = `Customer: <b>${latestBooking.name}</b> <br> Service: ${latestBooking.service}`;
-                    
-                    // 👇 YAHAN SOUND BAJANE WALI LINE ADD KI HAI 👇
-                    document.getElementById('notificationSound').play().catch(e => console.log("Sound play hone me issue:", e));
-                    
-                    let toast = document.getElementById('new-booking-toast');
-                    toast.style.display = 'flex';
-        
-        async function checkForNewBookings() {
-            try {
-                // Aapka apiUrl upar pehle se define hona chahiye
-                const response = await fetch(apiUrl); 
-                const data = await response.json();
-                
-                let currentCount = data.bookings.length;
-                let lastCount = localStorage.getItem("adminTotalBookings");
-
-                if (lastCount === null) {
-                    // Agar pehli baar admin panel khula hai, toh sirf data save karo
-                    localStorage.setItem("adminTotalBookings", currentCount);
-                } 
-                else if (currentCount > lastCount) {
-                    // 🎉 NAYI BOOKING AAYI HAI! 🎉
-                    let latestBooking = data.bookings[data.bookings.length - 1]; // Sabse nayi booking
-                    
-                    // Notification dabba update karo
-                    document.getElementById('new-booking-name').innerHTML = `Customer: <b>${latestBooking.name}</b> <br> Service: ${latestBooking.service}`;
-                    
-                    let toast = document.getElementById('new-booking-toast');
-                    toast.style.display = 'flex';
-                    
-                    // Animation se bahar laane ke liye
-                    setTimeout(() => { toast.style.transform = 'translateX(0)'; }, 100);
-                    
-                    // 6 second baad automatically chhupa do
-                    setTimeout(() => { 
-                        toast.style.transform = 'translateX(120%)'; 
-                        setTimeout(() => { toast.style.display = 'none'; }, 500);
-                    }, 6000);
-                    
-                    // Naya count save kar lo taaki baar baar notification na aaye
-                    localStorage.setItem("adminTotalBookings", currentCount);
-                    
-                    // Table ko naye data ke sath refresh kar do
-                    if (typeof fetchDashboardData === 'function') {
-                        fetchDashboardData();
-                    }
-                }
-            } catch(e) {
-                console.log("Background checking me error (Internet connection issue ho sakta hai)");
-            }
-        }
-
-        // Har 30 second (30000 milliseconds) mein chupke se background me check karega
-        setInterval(checkForNewBookings, 30000);
-
-        // Page load hone ke 2 second baad ek baar initial set kar lega
-        setTimeout(checkForNewBookings, 2000);
             lastBookingCount = total;
 
             let tableHTML = "";
             let customerHTML = ""; 
             let feedbackHTML = ""; 
             
-           // 1. Bookings aur Customers ka data set karna
+           // Bookings aur Customers ka data set karna
             for(let i = bookings.length - 1; i >= 0; i--) {
                 let row = bookings[i];
                 
                 if(row.status === "Pending") pending++;
                 else if(row.status === "Completed") completed++;
                 
-                // Form bharne ki date (Booking Date)
                 let dateObj = new Date(row.timestamp);
                 let bookedDate = dateObj.toLocaleDateString('en-IN');
                 
-                // 👇 YAHAN SMART CHECKER LAGA DIYA GAYA HAI 👇
                 let exactDate = row['Appointment Date'] || row.Date || row.date || row.custDate;
                 let apptDate = exactDate ? exactDate : "Not provided";
 
                 let exactTime = row['Appointment Time'] || row.Time || row.time || row.custTime;
-                // Yahan exactTime ko seedha dikhane ke bajaye formatAMPM ke andar daal diya
                 let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
                 
                 let statusClass = row.status === "Completed" ? "completed" : (row.status === "Cancelled" ? "cancelled" : "pending");
@@ -453,7 +368,7 @@
                 </tr>`;
             }
             
-            // 2. Feedback ka data set karna
+            // Feedback ka data set karna
             let totalRate = 0;
             for(let j = feedbacks.length - 1; j >= 0; j--) {
                 let fb = feedbacks[j];
@@ -521,10 +436,58 @@
         }
     }
 
+    // ==========================================
+    // 🔔 VIP NOTIFICATION BACKGROUND CHECKER
+    // ==========================================
+    async function checkForNewBookings() {
+        try {
+            const response = await fetch(apiUrl); 
+            const data = await response.json();
+            
+            let currentCount = data.bookings.length;
+            let lastCount = localStorage.getItem("adminTotalBookings");
+
+            if (lastCount === null) {
+                localStorage.setItem("adminTotalBookings", currentCount);
+            } 
+            else if (currentCount > lastCount) {
+                let latestBooking = data.bookings[data.bookings.length - 1]; 
+                
+                document.getElementById('new-booking-name').innerHTML = `Customer: <b>${latestBooking.name}</b> <br> Service: ${latestBooking.service}`;
+                
+                document.getElementById('notificationSound').play().catch(e => console.log("Sound play hone me issue:", e));
+                
+                let toast = document.getElementById('new-booking-toast');
+                toast.style.display = 'flex';
+                
+                setTimeout(() => { toast.style.transform = 'translateX(0)'; }, 100);
+                
+                setTimeout(() => { 
+                    toast.style.transform = 'translateX(120%)'; 
+                    setTimeout(() => { toast.style.display = 'none'; }, 500);
+                }, 6000);
+                
+                localStorage.setItem("adminTotalBookings", currentCount);
+                
+                if (typeof fetchDashboardData === 'function') {
+                    fetchDashboardData();
+                }
+            }
+        } catch(e) {
+            console.log("Background checking me error (Internet connection issue ho sakta hai)");
+        }
+    }
+
     window.onload = () => {
         history.replaceState({ tab: 'dashboard-view' }, "", "#dashboard-view");
         fetchDashboardData(); 
+        
+        // Auto-refresh the dashboard every 20 seconds
         setInterval(fetchDashboardData, 20000); 
+        
+        // Start background notification checker
+        setTimeout(checkForNewBookings, 2000);
+        setInterval(checkForNewBookings, 30000);
     };
 
     function toggleSidebar() {
@@ -557,7 +520,7 @@
     
 <script>
 // ==========================================
-// 🧠 HISTORY MODAL KHOLNE KA CODE (2-Column Design)
+// 🧠 HISTORY MODAL KHOLNE KA CODE
 // ==========================================
 function showCustomerHistory(phoneNumber, customerName) {
     document.getElementById('kundli-title').innerText = customerName + " - Service History";
@@ -581,15 +544,12 @@ function showCustomerHistory(phoneNumber, customerName) {
         customerHistory.forEach((b, index) => {
             let statusColor = b.status === 'Completed' ? '#22c55e' : (b.status === 'Cancelled' ? '#ef4444' : '#f59e0b');
             
-            // 👇 YAHAN BHI SMART CHECKER LAGA DIYA GAYA HAI 👇
             let exactDate = b['Appointment Date'] || b.Date || b.date || b.custDate;
             let apptDate = exactDate ? exactDate : "Not provided";
 
             let exactTime = b['Appointment Time'] || b.Time || b.time || b.custTime;
-            // 👇 Yahan humne exactTime ko formatAMPM ke andar daal diya 👇
             let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
             
-            // Form Submit (Booking) Details
             let bookedDate = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-IN') : "Unknown";
             let bookedTime = b.timestamp ? new Date(b.timestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'}) : "";
             
@@ -602,17 +562,14 @@ function showCustomerHistory(phoneNumber, customerName) {
                     <span style="background:${statusColor}; color:white; padding:2px 8px; border-radius:12px; font-size:12px;">${b.status}</span>
                 </div>
                 
-                <!-- 2-Column Design (Aamne-Saamne) -->
                 <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size:13px; color:#cbd5e1; margin-bottom: 12px;">
                     
-                    <!-- Left Box: Appointment Details -->
                     <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(250, 204, 21, 0.2);">
                         <div style="color: #facc15; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📍 Visit Scheduled</div>
                         <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${apptDate}</div>
                         <div>⏰ <b>Time:</b> ${apptTime}</div>
                     </div>
                     
-                    <!-- Right Box: Form Submitted Details -->
                     <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(148, 163, 184, 0.2);">
                         <div style="color: #94a3b8; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📝 Form Submitted</div>
                         <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${bookedDate}</div>
@@ -633,36 +590,29 @@ function showCustomerHistory(phoneNumber, customerName) {
     document.getElementById('kundli-modal').style.display = 'flex';
 }
 
-// ==========================================
-// ❌ CLOSE BUTTON FIX (Modal Band Karne Ka Code)
-// ==========================================
 function closeKundliModal() {
     let modal = document.getElementById('kundli-modal');
     if(modal) {
         modal.style.display = 'none';
     }
 }  
+
 // ==========================================
-        // 🔍 SUPER LIVE SEARCH (Sab kuch dhoondhega)
-        // ==========================================
-        function filterCustomers() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            
-            // Table ki saari rows ko pakdo
-            let tableRows = document.querySelectorAll("tbody tr");
-            
-            tableRows.forEach(row => {
-                // Poori row ka saara text (Name, Number, Service, Date sab) ek sath utha lo
-                let rowText = row.textContent || row.innerText;
-                
-                // Agar type kiya hua word poori row mein KAHIN BHI hai, toh dikhao
-                if (rowText.toLowerCase().indexOf(input) > -1) {
-                    row.style.display = ""; 
-                } else {
-                    row.style.display = "none"; 
-                }
-            });
+// 🔍 SUPER LIVE SEARCH
+// ==========================================
+function filterCustomers() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let tableRows = document.querySelectorAll("tbody tr");
+    
+    tableRows.forEach(row => {
+        let rowText = row.textContent || row.innerText;
+        if (rowText.toLowerCase().indexOf(input) > -1) {
+            row.style.display = ""; 
+        } else {
+            row.style.display = "none"; 
         }
+    });
+}
 </script>
 </body>
 </html>
