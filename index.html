@@ -666,7 +666,7 @@
         // 🔍 CUSTOMER TRACKING LOGIC (My Bookings - Premium Design)
         // ==========================================
 
-        // Time ko AM/PM mein badalne wali machine (Agar pehle nahi dali thi toh isko bhi daal dein)
+        // Time ko AM/PM mein badalne wali machine 
         function formatAMPM(timeString) {
             if (!timeString || !timeString.includes(':')) return timeString;
             let timeParts = timeString.split(':');
@@ -679,7 +679,7 @@
             return finalHours + ':' + minutes + ' ' + ampm;
         }
 
-        // Data Google Sheet se laane ka magic function (YAHI NAYA VIP DESIGN BANAYEGA)
+        // 🔍 CUSTOMER TRACKING LOGIC (VIP Design)
         async function fetchMyBookings() {
             let phone = document.getElementById('track-phone').value.trim();
             if(phone === "") {
@@ -706,17 +706,15 @@
                     myBookings.forEach(b => {
                         let statusColor = (b.status === 'Completed' || b.status === 'Confirm') ? '#22c55e' : (b.status === 'Cancelled' || b.status === 'Cancel' ? '#ef4444' : '#f59e0b');
                         
-                        // Smart Date aur Time nikalna (AM/PM ke sath)
                         let exactDate = b.date || b['Appointment Date'] || b.custDate || "Not provided";
                         let exactTime = b.time || b['Appointment Time'] || b.custTime || "";
                         let apptTime = exactTime ? formatAMPM(exactTime) : "Not specified";
                         
-                        // Form kab bhara gaya uski details
                         let bookedDate = b.timestamp ? new Date(b.timestamp).toLocaleDateString('en-IN') : "Unknown";
                         let bookedTime = b.timestamp ? new Date(b.timestamp).toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'}) : "";
                         let showProblem = b.problem || "No extra details";
                         
-                        // 👇 NAYA: Admin jaisa 2-Column VIP Card 👇
+                        // 👇 NAYA VIP CARD DESIGN 👇
                         html += `
                         <div style="background:#334155; padding:15px; margin-bottom:12px; border-radius:8px; border-left: 4px solid ${statusColor}; text-align: left;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid #475569; padding-bottom: 8px;">
@@ -725,13 +723,11 @@
                             </div>
                             
                             <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size:13px; color:#cbd5e1; margin-bottom: 12px;">
-                                
                                 <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(250, 204, 21, 0.2);">
                                     <div style="color: #facc15; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📍 Visit Scheduled</div>
                                     <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${exactDate}</div>
                                     <div>⏰ <b>Time:</b> ${apptTime}</div>
                                 </div>
-                                
                                 <div style="flex: 1; min-width: 140px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 6px; border: 1px solid rgba(148, 163, 184, 0.2);">
                                     <div style="color: #94a3b8; font-weight: bold; margin-bottom: 6px; font-size: 11px; text-transform: uppercase;">📝 Form Submitted</div>
                                     <div style="margin-bottom: 3px;">📅 <b>Date:</b> ${bookedDate}</div>
@@ -752,7 +748,7 @@
                 document.getElementById('customer-history-modal').style.display = 'flex';
                 
             } catch(e) {
-                alert("Internet mein dikkat hai ya server slow hai. Dobara try karein.");
+                alert("Internet mein dikkat hai ya server slow hai.");
             }
             
             btn.innerHTML = originalText;
