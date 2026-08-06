@@ -11,22 +11,15 @@
     <link rel="stylesheet" href="admin-style.css">
 
     <!-- ========================================== -->
-    <!-- 🚀 ONESIGNAL PUSH NOTIFICATION SETUP       -->
-    <!-- ========================================== -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "90eb598a-b87a-4eb2-8d05-6e20067fe0fe",
-        });
-        
-        // 👇 YEH NAYI LINE SIRF ADMIN HTML MEIN DALNI HAI 👇
-        OneSignal.User.addTag("user_role", "admin");
-      });
-    </script>
-</head>
-<body>
+<!-- 🔔 VIP ADMIN NOTIFICATION POPUP -->
+<!-- ========================================== -->
+<div id="new-booking-toast" style="display: none; position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 9999; font-weight: bold; align-items: center; gap: 12px; transform: translateX(120%); transition: transform 0.5s ease-in-out; border-left: 5px solid #166534;">
+    <div style="font-size: 24px;">🔔</div>
+    <div>
+        <div style="font-size: 16px; margin-bottom: 2px;">New Booking Received!</div>
+        <div id="new-booking-name" style="font-size: 13px; font-weight: normal; color: #dcfce7;">Checking...</div>
+    </div>
+</div>
     <!-- 🔔 Notification Sound -->
     <audio id="notificationSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
@@ -321,33 +314,69 @@
             let pending = 0;
             let completed = 0;
             
-            // ==========================================
-            // 🔔 NOTIFICATION SYSTEM LOGIC
-            // ==========================================
-            if (lastBookingCount !== -1 && total > lastBookingCount) {
-                let audio = document.getElementById('notificationSound');
-                if(audio) {
-                    audio.currentTime = 0; 
-                    audio.play().catch(e => console.log("Browser block:", e));
-                }
+        // ==========================================
+        // 🔔 NEW BOOKING RADAR (Background Checker)
+        // ==========================================
+
+            // Notification dabba update karo
+                    document.getElementById('new-booking-name').innerHTML = `Customer: <b>${latestBooking.name}</b> <br> Service: ${latestBooking.service}`;
+                    
+                    // 👇 YAHAN SOUND BAJANE WALI LINE ADD KI HAI 👇
+                    document.getElementById('notificationSound').play().catch(e => console.log("Sound play hone me issue:", e));
+                    
+                    let toast = document.getElementById('new-booking-toast');
+                    toast.style.display = 'flex';
+        
+        async function checkForNewBookings() {
+            try {
+                // Aapka apiUrl upar pehle se define hona chahiye
+                const response = await fetch(apiUrl); 
+                const data = await response.json();
                 
-                if (Notification.permission === "granted") {
-                    new Notification("Ankita Electrician", {
-                        body: "🔔 Badhai ho! Ek nayi booking aayi hai!",
-                        icon: "image/icon.png",
-                        vibrate: [200, 100, 200]
-                    });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification("Ankita Electrician", {
-                                body: "🔔 Badhai ho! Ek nayi booking aayi hai!",
-                                icon: "image/icon.png"
-                            });
-                        }
-                    });
+                let currentCount = data.bookings.length;
+                let lastCount = localStorage.getItem("adminTotalBookings");
+
+                if (lastCount === null) {
+                    // Agar pehli baar admin panel khula hai, toh sirf data save karo
+                    localStorage.setItem("adminTotalBookings", currentCount);
+                } 
+                else if (currentCount > lastCount) {
+                    // 🎉 NAYI BOOKING AAYI HAI! 🎉
+                    let latestBooking = data.bookings[data.bookings.length - 1]; // Sabse nayi booking
+                    
+                    // Notification dabba update karo
+                    document.getElementById('new-booking-name').innerHTML = `Customer: <b>${latestBooking.name}</b> <br> Service: ${latestBooking.service}`;
+                    
+                    let toast = document.getElementById('new-booking-toast');
+                    toast.style.display = 'flex';
+                    
+                    // Animation se bahar laane ke liye
+                    setTimeout(() => { toast.style.transform = 'translateX(0)'; }, 100);
+                    
+                    // 6 second baad automatically chhupa do
+                    setTimeout(() => { 
+                        toast.style.transform = 'translateX(120%)'; 
+                        setTimeout(() => { toast.style.display = 'none'; }, 500);
+                    }, 6000);
+                    
+                    // Naya count save kar lo taaki baar baar notification na aaye
+                    localStorage.setItem("adminTotalBookings", currentCount);
+                    
+                    // Table ko naye data ke sath refresh kar do
+                    if (typeof fetchDashboardData === 'function') {
+                        fetchDashboardData();
+                    }
                 }
-            } 
+            } catch(e) {
+                console.log("Background checking me error (Internet connection issue ho sakta hai)");
+            }
+        }
+
+        // Har 30 second (30000 milliseconds) mein chupke se background me check karega
+        setInterval(checkForNewBookings, 30000);
+
+        // Page load hone ke 2 second baad ek baar initial set kar lega
+        setTimeout(checkForNewBookings, 2000);
             lastBookingCount = total;
 
             let tableHTML = "";
