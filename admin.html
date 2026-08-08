@@ -208,17 +208,26 @@
    <script>
     const apiUrl = "https://script.google.com/macros/s/AKfycbzOJlQ0m-xnd-mqDJQsevTALPmty948Inji2XxSdg8DXGM8Gg9FYq6asSNKXZgXaTxTwA/exec";
 
-    function formatAMPM(timeString) {
-        if (!timeString || !timeString.includes(':')) return timeString;
-        let timeParts = timeString.split(':');
-        let hours = parseInt(timeParts[0]);
-        let minutes = timeParts[1];
-        let ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; 
-        let finalHours = hours < 10 ? '0' + hours : hours;
-        return finalHours + ':' + minutes + ' ' + ampm;
-    }
+    // Time ko format karne ka Smart function (Admin ke liye)
+        function formatAMPM(timeString) {
+            if (!timeString) return "";
+            
+            // NAYA LOGIC: Agar time mein pehle se AM ya PM hai, toh usko waisa hi chhod do!
+            if (timeString.toUpperCase().includes('AM') || timeString.toUpperCase().includes('PM')) {
+                return timeString;
+            }
+
+            if (!timeString.includes(':')) return timeString;
+            
+            let timeParts = timeString.split(':');
+            let hours = parseInt(timeParts[0]);
+            let minutes = timeParts[1];
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            let finalHours = hours < 10 ? '0' + hours : hours;
+            return finalHours + ':' + minutes + ' ' + ampm;
+        }
 
     // --- 🔒 SECURITY LOCK LOGIC ---
     function checkPin() {
