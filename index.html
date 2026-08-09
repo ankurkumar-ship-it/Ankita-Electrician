@@ -800,18 +800,24 @@
         }
 
         /* =========================================
-           3. TOP BANNER (Hero Section)
+           3. TOP BANNER (Hero Section) - LEFT ALIGNED
            ========================================= */
         .hero {
             padding: 40px 20px;
             background: radial-gradient(circle at top right, #1e293b 0%, #080c15 60%);
+            text-align: left !important; /* Sabse zaroori: Text ko left mein dhakela */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start !important; /* Har element ko left mein set karega */
         }
 
         .hero h1 {
+            text-align: left !important;
             font-size: 32px;
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         .hero h1 .highlight {
@@ -819,17 +825,21 @@
         }
 
         .hero p {
+            text-align: left !important;
             color: #94a3b8; /* Light grayish blue */
             font-size: 15px;
             margin-bottom: 25px;
+            width: 100%;
         }
 
         /* Trust Badges (30 mins, Verified, etc.) */
         .trust-badges {
             display: flex;
+            justify-content: flex-start !important; /* Badges ko Left mein set kiya */
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 30px;
+            width: 100%;
         }
 
         .badge {
@@ -853,11 +863,14 @@
         /* Hero Buttons (Aamne-saamne) */
         .hero-actions {
             display: flex;
+            justify-content: flex-start !important; /* Buttons ko Left mein set kiya */
             gap: 15px;
+            width: 100%;
         }
 
         .btn-primary {
             flex: 1;
+            max-width: 250px; /* Button ko poora failne se rokne ke liye */
             background-color: #facc15;
             color: #0f172a;
             border: none;
@@ -875,6 +888,7 @@
 
         .btn-secondary {
             flex: 1;
+            max-width: 250px; /* Button ko poora failne se rokne ke liye */
             background-color: transparent;
             color: #ffffff;
             border: 2px solid #334155;
@@ -894,9 +908,12 @@
         @media (max-width: 360px) {
             .hero-actions {
                 flex-direction: column; /* Choti screen pe ek ke niche ek */
+                align-items: flex-start;
+            }
+            .btn-primary, .btn-secondary {
+                max-width: 100%;
             }
         }
-
         /* =========================================
            4. OUR SERVICES SECTION
            ========================================= */
@@ -1722,30 +1739,6 @@
             .heading-top h2 { font-size: 24px; }
             .line-left, .line-right { width: 20px; }
             .line-left-bottom, .line-right-bottom { width: 40px; }
-        }
-
-        /* =========================================
-           17.HERO TEXT LEFT ALIGN FIX (VIP GREEN BOX JAISA)
-           ========================================= */
-        .hero-text-side {
-            text-align: left !important; 
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important; 
-        }
-
-        .hero-text-side h1 {
-            text-align: left !important;
-            width: 100% !important;
-        }
-
-        .subtitle {
-            text-align: left !important;
-            width: 100% !important;
-        }
-
-        .trust-badges, .hero-buttons {
-            justify-content: flex-start !important;
         }
     </style>
 </body>
