@@ -1536,7 +1536,7 @@
         }
 
         /* =========================================
-           14. HERO SECTION PREMIUM CARD LAYOUT (Left Aligned Fix)
+           14. HERO SECTION PREMIUM CARD LAYOUT
            ========================================= */
         .hero {
             padding: 20px;
@@ -1544,48 +1544,80 @@
             justify-content: center;
         }
 
-        /* 1. Hero Card se Border (Box) hatane ke liye */
         .hero-card {
-            background-color: #111827 !important; 
-            border: none !important; /* Yahan se border hata diya hai taaki box jaisa na lage */
+            background-color: #111827; /* Dark card background */
+            border: 1px solid #1f2937;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             max-width: 1200px;
             width: 100%;
-            overflow: hidden; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+            overflow: hidden; /* Photo ko dabbe ke andar gol rakhne ke liye */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* 2. Text ko Left (Kone mein) lane ke liye */
         .hero-text-side {
             padding: 50px;
             flex: 1;
             min-width: 300px;
-            text-align: left !important; /* Sab kuch left align kar diya */
         }
 
-        .hero-text-side h1 {
-            text-align: left !important;
-            font-size: 38px;
-            line-height: 1.2;
-            margin-bottom: 15px;
+        .hero-image-side {
+            flex: 1;
+            position: relative;
+            min-width: 300px;
+            height: 100%;
+            display: flex;
         }
 
-        .highlight { color: #facc15; }
-
-        .subtitle {
-            text-align: left !important;
-            color: #94a3b8;
-            font-size: 16px;
-            margin-bottom: 30px;
+        .hero-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 450px;
+            /* Photo ko left side se thoda dhundhla (fade) karne ke liye */
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%);
+            mask-image: linear-gradient(to right, transparent, black 15%);
         }
 
-        /* 3. Badges ko Left mein lane ke liye */
+        /* Floating Info Boxes (Photo ke upar wale dabbe) */
+        .floating-box {
+            position: absolute;
+            background-color: rgba(17, 24, 39, 0.85); /* Halka transparent */
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d1d5db;
+            font-size: 13px;
+            backdrop-filter: blur(5px);
+        }
+
+        .floating-box strong {
+            color: #facc15;
+            font-size: 14px;
+        }
+
+        .floating-box .icon {
+            font-size: 20px;
+        }
+
+        .box-1 {
+            bottom: 100px; 
+            right: 20px;
+        }
+
+        .box-2 {
+            bottom: 30px; 
+            right: 20px;
+        }
+
+        /* Trust Badges ka Naya Design */
         .trust-badges {
             display: flex;
-            justify-content: flex-start !important; /* Left alignment */
             gap: 15px;
             margin-bottom: 30px;
             flex-wrap: wrap;
@@ -1601,12 +1633,23 @@
             align-items: center;
         }
 
-        /* 4. Buttons ko Left mein lane ke liye */
-        .hero-buttons {
-            display: flex;
-            justify-content: flex-start !important; /* Left alignment */
-            gap: 15px;
-            flex-wrap: wrap;
+        /* Mobile View Fixes */
+        @media (max-width: 800px) {
+            .hero-card {
+                flex-direction: column;
+            }
+            .hero-main-img {
+                /* Mobile par photo upar se fade hogi */
+                -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%);
+                mask-image: linear-gradient(to bottom, transparent, black 15%);
+            }
+            .hero-text-side {
+                padding: 30px 20px;
+            }
+            .floating-box {
+                transform: scale(0.9);
+                right: 10px;
+            }
         }
         /* =========================================
            15. YELLOW UNDERLINE FOR HEADINGS
