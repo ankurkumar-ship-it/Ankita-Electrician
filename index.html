@@ -971,12 +971,29 @@
            SERVICES GRID (5 CARDS IN ONE ROW)
            ========================================= */
         .services-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); 
-            gap: 10px; 
-            max-width: 1050px !important; /* Yahan humne width kam kar di taaki cards zyada na failein */
-            margin: 30px auto;
-            padding: 0 15px;
+            display: flex !important; /* Grid hata kar Flex lagaya taaki fix rahein */
+            justify-content: center !important; /* Sabhi cards ko screen ke ekdum beech me layega */
+            flex-wrap: wrap !important;
+            gap: 18px !important; 
+            max-width: 1100px !important;
+            margin: 30px auto !important;
+            padding: 0 15px !important;
+        }
+
+        .service-card {
+            width: 190px !important; /* Card ki chaurai hamesha ke liye FIX kar di */
+            flex: 0 0 auto !important; /* Ab yeh cards kabhi kheenchat-tani nahi karenge */
+            
+            /* Baaki purana VIP design waisa hi rahega */
+            background-color: #1e293b;
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #334155;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         /* Mobile aur Tablet par design theek rakhne ke liye */
